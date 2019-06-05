@@ -2,10 +2,10 @@ package plays
 
 import (
 	"bytes"
+	"game_fly/plays/assets/images"
 	"github.com/hajimehoshi/ebiten"
 	"image"
 	"log"
-	"test/play/plays/assets/images"
 )
 
 type Screen01 struct {

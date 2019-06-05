@@ -2,12 +2,12 @@ package plays
 
 import (
 	"bytes"
+	"game_fly/plays/assets/images"
 	"github.com/SolarLune/resolv/resolv"
 	"github.com/hajimehoshi/ebiten"
 	"image"
 	"log"
 	"math"
-	"test/play/plays/assets/images"
 )
 
 type Bullet struct {
@@ -17,7 +17,6 @@ type Bullet struct {
 
 var BulletImg *ebiten.Image
 var BulletImg2 *ebiten.Image
-
 
 func init() {
 	img, _, err := image.Decode(bytes.NewReader(images.Myb_1))
@@ -33,7 +32,7 @@ func init() {
 
 }
 
-func NewBullet(game *Game, p P,stepX float64) (bullet *Bullet) {
+func NewBullet(game *Game, p P, stepX float64) (bullet *Bullet) {
 	x, y, w, h := p.GetPosition()
 	bullet = &Bullet{}
 	bullet.RootNode = game
@@ -60,7 +59,7 @@ func (b *Bullet) Update(points string) (err error) {
 	if points == "hero" {
 		b.Move(b.stepX, -5)
 	} else if points == "enemy" {
-		b.Move(b.stepX,5)
+		b.Move(b.stepX, 5)
 	}
 	if ebiten.IsDrawingSkipped() {
 		return nil

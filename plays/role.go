@@ -3,13 +3,13 @@ package plays
 import (
 	"bytes"
 	"fmt"
+	"game_fly/plays/assets/images"
 	"github.com/SolarLune/resolv/resolv"
 	"github.com/hajimehoshi/ebiten"
 	"image"
 	"log"
 	"math"
 	"strconv"
-	"test/play/plays/assets/images"
 )
 
 type Role struct {
@@ -49,15 +49,17 @@ func NewRole(game *Game) (role *Role) {
 
 func (r *Role) Update() (err error) {
 	count++
+	r.CheckCollied()
 
+	fmt.Println(r.bullet)
 	for k, v := range r.bullet {
-		v.Update("hero")
 		//到达边界删除
 		if v.Y < 0 {
-			if len(r.bullet) > 1 {
+			if k < len(r.bullet)-1 {
 				r.bullet = append(r.bullet[:k], r.bullet[k+1:]...)
 			}
 		}
+		v.Update("hero")
 	}
 
 	if count == 100 {
@@ -78,8 +80,6 @@ func (r *Role) Update() (err error) {
 			r.CollideSpaceBullet.Add(bullet.Collide)
 		}
 	}
-
-	r.CheckCollied()
 
 	r.Drow()
 

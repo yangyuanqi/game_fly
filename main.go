@@ -1,8 +1,8 @@
 package main
 
 import (
+	"game_fly/plays"
 	"github.com/hajimehoshi/ebiten"
-	"test/play/plays"
 )
 
 func main() {

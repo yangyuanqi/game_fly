@@ -71,8 +71,8 @@ func (g *Game) Update(screen *ebiten.Image) (err error) {
 
 		//渲染敌人
 		for k, v := range g.Enemys {
-			if len(g.Enemys) > 1 {
-				if v.Y > float64(g.H)+float64(g.Enemys[0].H) {
+			if v.Y > float64(g.H)+float64(g.Enemys[0].H) {
+				if k < len(g.Enemys)-1 {
 					g.Enemys = append(g.Enemys[:k], g.Enemys[k+1:]...)
 				}
 			}

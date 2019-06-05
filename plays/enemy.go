@@ -11,6 +11,7 @@ import (
 type Enemy struct {
 	Billet []*Bullet
 	CC
+	IsShow bool
 }
 
 var billetCount int
@@ -26,6 +27,7 @@ func NewEnemy(game *Game) (enemy *Enemy) {
 	enemy.Y = 0
 	enemy.Collide = resolv.NewRectangle(int32(enemy.X), int32(enemy.Y), int32(enemy.W), int32(enemy.H))
 	enemy.CollideSpace = resolv.NewSpace()
+	enemy.IsShow = true
 	return
 }
 
@@ -57,11 +59,12 @@ func (e *Enemy) Update() (err error) {
 
 	if len(e.Billet) > 0 {
 		for k, v := range e.Billet {
-			v.Update("enemy")
 			//到达边界删除
 			if v.Y >= float64(e.RootNode.H) {
 				e.Billet = append(e.Billet[:k], e.Billet[k+1:]...)
 			}
+
+			v.Update("enemy")
 		}
 	}
 
