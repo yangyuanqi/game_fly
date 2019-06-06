@@ -10,7 +10,7 @@ import (
 
 type Enemy struct {
 	Billet []*Bullet
-	CC
+	Sprite
 	IsShow bool
 }
 
@@ -26,7 +26,6 @@ func NewEnemy(game *Game) (enemy *Enemy) {
 	enemy.X = float64(rand.Intn(enemy.RootNode.W - enemy.W))
 	enemy.Y = 0
 	enemy.Collide = resolv.NewRectangle(int32(enemy.X), int32(enemy.Y), int32(enemy.W), int32(enemy.H))
-	enemy.CollideSpace = resolv.NewSpace()
 	enemy.IsShow = true
 	return
 }
@@ -81,6 +80,3 @@ func (e *Enemy) Draw() {
 	e.RootNode.screen.DrawImage(enemyImg, opts2)
 }
 
-func (e *Enemy) GetPosition() (x, y float64, w, h int) {
-	return e.X, e.Y, e.W, e.H
-}

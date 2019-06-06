@@ -5,30 +5,34 @@ import (
 	"math"
 )
 
-type CC struct {
+type Sprite struct {
 	X, Y         float64
 	W, H         int
 	ScaleW       float64
 	ScaleH       float64
 	RootNode     *Game             //根节点
 	Collide      *resolv.Rectangle //碰撞绑定
-	CollideSpace *resolv.Space     //碰撞空间绑定
+	CollideSpace *resolv.Space     //像地形较复杂
 }
 
-func (c *CC) Move(offsetX, offsetY float64) {
+func (s *Sprite) Move(offsetX, offsetY float64) {
 	if offsetX > 0 {
-		c.X += offsetX
-		c.Collide.X = int32(c.X)
+		s.X += offsetX
+		s.Collide.X = int32(s.X)
 	} else if offsetX < 0 {
-		c.X -= math.Abs(offsetX)
-		c.Collide.X = int32(c.X)
+		s.X -= math.Abs(offsetX)
+		s.Collide.X = int32(s.X)
 	}
 
 	if offsetY > 0 {
-		c.Y += offsetY
-		c.Collide.Y = int32(c.Y)
+		s.Y += offsetY
+		s.Collide.Y = int32(s.Y)
 	} else if offsetY < 0 {
-		c.Y -= math.Abs(offsetY)
-		c.Collide.Y = int32(c.Y)
+		s.Y -= math.Abs(offsetY)
+		s.Collide.Y = int32(s.Y)
 	}
+}
+
+func (s *Sprite) GetPosition() (x, y float64, w, h int) {
+	return s.X, s.Y, s.W, s.H
 }

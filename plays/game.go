@@ -31,9 +31,9 @@ func NewGame() (game *Game) {
 }
 
 func (g *Game) Onload() {
-	g.Input = NewInput(g)
-
 	g.hero = NewRole(g)
+
+	g.Input = NewInput(g)
 
 	enemy := NewEnemy(g)
 	enemy.Onload()
@@ -47,11 +47,11 @@ func (g *Game) Update(screen *ebiten.Image) (err error) {
 	g.screen = screen
 	Count ++
 	g.Input.Update()
-
+fmt.Println(len(g.Enemys))
 	switch g.scenesIng {
 	case 0:
 	case 1:
-		g.hero.Update()
+
 		if Count == 1000 {
 			Count = 0
 		}
@@ -79,6 +79,8 @@ func (g *Game) Update(screen *ebiten.Image) (err error) {
 
 			v.Update()
 		}
+
+		g.hero.Update()
 
 		msg := fmt.Sprintf(`fps:%.2f`, ebiten.CurrentFPS())
 		ebitenutil.DebugPrint(screen, msg)

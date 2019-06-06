@@ -11,7 +11,7 @@ import (
 )
 
 type Bullet struct {
-	CC
+	Sprite
 	stepX float64 //子弹x轴偏移角度
 }
 
@@ -57,10 +57,11 @@ func (b *Bullet) Onload() {
 
 func (b *Bullet) Update(points string) (err error) {
 	if points == "hero" {
-		b.Move(b.stepX, -5)
+		b.Move(b.stepX, -8)
 	} else if points == "enemy" {
 		b.Move(b.stepX, 5)
 	}
+
 	if ebiten.IsDrawingSkipped() {
 		return nil
 	}
@@ -76,6 +77,4 @@ func (b *Bullet) Draw() {
 	b.RootNode.screen.DrawImage(BulletImg, opts2)
 }
 
-func (b *Bullet) GetPosition() (x, y float64, w, h int) {
-	return b.X, b.Y, b.W, b.H
-}
+

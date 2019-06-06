@@ -22,15 +22,3 @@ func CheckCollision(p1, p2 P) (b bool) {
 
 	return false
 }
-
-//
-/*func Move(p P, pointsCompass, acceleration string) {
-	x, y, w, h := p.GetPosition()
-	switch pointsCompass {
-	case "Left":
-		x--
-	case "Right":
-	case "Up":
-	case "Down":
-	}
-}*/

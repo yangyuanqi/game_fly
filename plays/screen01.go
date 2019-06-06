@@ -9,7 +9,7 @@ import (
 )
 
 type Screen01 struct {
-	CC
+	Sprite
 }
 
 var screen01Image *ebiten.Image
