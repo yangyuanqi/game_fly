@@ -1,4 +1,4 @@
-package plays
+package core
 
 import "math"
 

@@ -5,6 +5,8 @@ import (
 	"github.com/hajimehoshi/ebiten"
 )
 
+
+
 func main() {
 	game := plays.NewGame()
 	game.Onload()
