@@ -1,18 +1,17 @@
 package core
 
 import (
-	"github.com/SolarLune/resolv/resolv"
 	"math"
 )
 
 type Sprite struct {
-	X, Y         float64
-	W, H         int
-	ScaleW       float64
-	ScaleH       float64
-	MX, MY       float64           //运动规律，当实例化后怎么运动会依靠此参数
-	Collide      *resolv.Rectangle //碰撞绑定
-	CollideSpace *resolv.Space     //像地形较复杂
+	X, Y    float64
+	W, H    int
+	ScaleW  float64
+	ScaleH  float64
+	MX, MY  float64 //运动规律，当实例化后怎么运动会依靠此参数
+	Visible bool    //隐藏
+	Component  []Component
 }
 
 func (s *Sprite) Move() {
@@ -50,4 +49,9 @@ func (s *Sprite) SetScale(sw, sh float64) {
 
 func (s *Sprite) GetPosition() (x, y float64, w, h int) {
 	return s.X, s.Y, s.W, s.H
+}
+
+func (s *Sprite) AddSystem(sys Component) {
+	s.Component = append(s.Component, sys)
+	return
 }

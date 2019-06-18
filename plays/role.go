@@ -17,10 +17,6 @@ type Role struct {
 	BulletImg   *ebiten.Image
 }
 
-func init() {
-
-}
-
 func NewRole(rootNode *Game, roleImg, bulletImg *ebiten.Image) (role *Role) {
 	role = &Role{}
 	role.RoleImg = roleImg
@@ -39,13 +35,7 @@ func (r *Role) Onload() {
 }
 
 func (r *Role) Update() (err error) {
-	for k, v := range r.GroupBullet {
-		//到达边界删除
-		if v.Y < 0 {
-			if k < len(r.GroupBullet) {
-				r.GroupBullet = append(r.GroupBullet[:k], r.GroupBullet[k+1:]...)
-			}
-		}
+	for _, v := range r.GroupBullet {
 		v.Update()
 	}
 
@@ -82,15 +72,13 @@ func (r *Role) Drow() {
 func (r *Role) CheckCollied() {
 	//敌人和英雄
 
-
 	//英雄子弹和敌人
-	for k, v := range r.RootNode.Enemys {
-		for k2, v2 := range r.GroupBullet {
-			if core.CheckCollision(v, v2) {
-				if k < len(r.RootNode.Enemys) {
-					r.RootNode.Enemys = append(r.RootNode.Enemys[:k], r.RootNode.Enemys[k+1:]...)
-					r.GroupBullet = append(r.GroupBullet[:k2], r.GroupBullet[k2+1:]...)
-				}
+	for _, v := range r.RootNode.Enemys {
+		for _, v2 := range r.GroupBullet {
+			if v.Visible == true && v2.Visible == true && core.CheckCollision(v, v2) {
+				v.Visible = false
+				v2.Visible = false
+
 			}
 		}
 	}
@@ -102,11 +90,11 @@ func (r *Role) AutoBullet01() {
 	for i := 1; i < 7; i++ {
 		if i > 3 {
 			bullet = NewBullet(r.RootNode, r, r.BulletImg)
-			bullet.MX = float64(i - 3)/10
+			bullet.MX = float64(i-3) / 10
 			bullet.MY = -10
 		} else {
 			bullet = NewBullet(r.RootNode, r, r.BulletImg)
-			bullet.MX = float64(-i)/10
+			bullet.MX = float64(-i) / 10
 			bullet.MY = -10
 		}
 		r.GroupBullet = append(r.GroupBullet, bullet)

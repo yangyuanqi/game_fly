@@ -23,8 +23,8 @@ func (i *Input) Update() (err error) {
 
 	if ebiten.IsKeyPressed(ebiten.KeyUp) {
 		if v := inpututil.KeyPressDuration(ebiten.KeyUp); 0 < v {
-			if v == 1 || v%2 == 0 {
-				i.RootNode.hero.Y -= 10
+			if v == 1 || v%1 == 0 {
+				i.RootNode.hero.Y -= 5
 			}
 		}
 		if i.RootNode.hero.Y <= 0 {
@@ -33,8 +33,8 @@ func (i *Input) Update() (err error) {
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyDown) {
 		if v := inpututil.KeyPressDuration(ebiten.KeyDown); 0 < v {
-			if v == 1 || v%2 == 0 {
-				i.RootNode.hero.Y += 10
+			if v == 1 || v%1 == 0 {
+				i.RootNode.hero.Y += 5
 			}
 		}
 		if i.RootNode.hero.Y >= float64(i.RootNode.H)-float64(i.RootNode.hero.H) {
@@ -43,8 +43,8 @@ func (i *Input) Update() (err error) {
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyLeft) {
 		if v := inpututil.KeyPressDuration(ebiten.KeyLeft); 0 < v {
-			if v == 1 || v%2 == 0 {
-				i.RootNode.hero.X -= 10
+			if v == 1 || v%1 == 0 {
+				i.RootNode.hero.X -= 5
 			}
 			i.RootNode.hero.Left = v
 		}
@@ -55,8 +55,8 @@ func (i *Input) Update() (err error) {
 	// 當「按鍵右」被按下時⋯⋯
 	if ebiten.IsKeyPressed(ebiten.KeyRight) {
 		if v := inpututil.KeyPressDuration(ebiten.KeyRight); 0 < v {
-			if v == 1 || v%2 == 0 {
-				i.RootNode.hero.X += 10
+			if v == 1 || v%1 == 0 {
+				i.RootNode.hero.X += 5
 			}
 			i.RootNode.hero.Right = v
 		}

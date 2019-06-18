@@ -23,7 +23,7 @@ func NewEnemy(rootNode *Game, enemyImg, bulletImg *ebiten.Image, params Enemy) (
 	enemy.RootNode = rootNode
 	enemy.EnemyImg = enemyImg
 	enemy.BulletImg = bulletImg
-
+	enemy.Visible = true
 	w, h := enemyImg.Size()
 	enemy.SetScale(0.3, 0.3)
 	enemy.SetWH(int(math.Round(float64(w)*enemy.ScaleW)), int(math.Round(float64(h)*enemy.ScaleH)))
@@ -36,19 +36,20 @@ func NewEnemy(rootNode *Game, enemyImg, bulletImg *ebiten.Image, params Enemy) (
 
 //加载资源
 func (e *Enemy) Onload() {
-	core.SetTicker(time.Millisecond*200, e.bullet01, 0)
+	core.SetTicker(time.Millisecond*200, e.bullet02, 0)
 }
 
 //更新
 func (e *Enemy) Update() (err error) {
+	if e.Visible == false {
+		return nil
+	}
 
-	for k, v := range e.GroupBillet {
-		//到达边界删除
-		if v.Y >= float64(e.RootNode.H) {
-			if k < len(e.GroupBillet) {
-				e.GroupBillet = append(e.GroupBillet[:k], e.GroupBillet[k+1:]...)
-			}
-		}
+	if e.Y > float64(e.RootNode.H) {
+		e.Visible = false
+	}
+
+	for _, v := range e.GroupBillet {
 		if core.CheckCollision(v, e.RootNode.hero) {
 			e.RootNode.scenesIng = 100
 		}
@@ -71,6 +72,18 @@ func (e *Enemy) Draw() {
 
 func (e *Enemy) bullet01() {
 	b := NewBullet(e.RootNode, e, e.BulletImg)
+	b.Y = e.Y + float64(e.H)
 	b.MY = 10
 	e.GroupBillet = append(e.GroupBillet, b)
+}
+
+func (e *Enemy) bullet02() {
+	for i := 0; i < 8; i++ {
+		b := NewBullet(e.RootNode, e, e.BulletImg)
+		b.Y = e.Y + float64(e.H)
+		x, y := core.GetXYOfDegree(float64(i*10), b.X, b.Y, 1)
+		b.MY = y
+		b.MX = x
+		e.GroupBillet = append(e.GroupBillet, b)
+	}
 }

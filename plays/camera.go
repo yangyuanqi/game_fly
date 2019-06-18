@@ -111,12 +111,7 @@ func (g *Game) Update(screen *ebiten.Image) (err error) {
 		}
 
 		//渲染敌人
-		for k, v := range g.Enemys {
-			if v.Y > float64(g.H)+float64(g.Enemys[0].H) {
-				if k < len(g.Enemys)-1 {
-					g.Enemys = append(g.Enemys[:k], g.Enemys[k+1:]...)
-				}
-			}
+		for _, v := range g.Enemys {
 			v.Update()
 		}
 
@@ -124,9 +119,27 @@ func (g *Game) Update(screen *ebiten.Image) (err error) {
 
 		msg := fmt.Sprintf(`fps:%.2f`, ebiten.CurrentFPS())
 		ebitenutil.DebugPrint(screen, msg)
+
+		fmt.Println(len(g.hero.GroupBullet))
 	case 100:
 		op := &ebiten.DrawImageOptions{}
 		screen.DrawImage(EndImg, op)
+	}
+
+	//销毁
+	for k, v := range g.Enemys {
+		if v.Visible == false {
+			if k < len(g.Enemys) {
+				g.Enemys = append(g.Enemys[:k], g.Enemys[k+1:]...)
+			}
+		}
+	}
+	for k, v := range g.hero.GroupBullet {
+		if v.Visible == false {
+			if k < len(g.hero.GroupBullet) {
+				g.hero.GroupBullet = append(g.hero.GroupBullet[:k], g.hero.GroupBullet[k+1:]...)
+			}
+		}
 	}
 
 	return nil
