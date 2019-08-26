@@ -11,16 +11,15 @@ import (
 func main() {
 	game := Core{}
 	game.OnLoad()
-	ebiten.Run(game.Update, 640, 640, 1, "灰机大战")
+	ebiten.Run(game.Update, 320, 480, 1, "灰机大战")
 }
 
 type Core struct {
 }
 
 func (c *Core) OnLoad() {
-	core.RegisterScene(&plays.Scenes1{}, "scen1")
-	core.RegisterScene(&plays.Scenes2{}, "scen2")
-	core.SetScenesIng("scen1")
+	core.RegisterScene(plays.NewGame(), "game")
+	core.SetScenesIng("game")
 }
 
 func (c *Core) Update(screen *ebiten.Image) (err error) {

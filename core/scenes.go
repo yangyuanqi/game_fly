@@ -6,7 +6,7 @@ import (
 
 type Scene interface {
 	OnLoad()
-	Update(screen *ebiten.Image)
+	Update(screen *ebiten.Image) (err error)
 }
 
 var (
@@ -25,4 +25,5 @@ func GetScene(name string) (scene Scene) {
 
 func SetScenesIng(name string) {
 	ScenesIng = name
+	Scenes[name].OnLoad()
 }

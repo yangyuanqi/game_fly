@@ -18,7 +18,7 @@ var (
 	img *ebiten.Image
 )
 
-func (h *Hero) OnLoad() {
+func (h *Hero) OnLoad() (err error) {
 	h.X = 0
 	h.Y = 610
 	h.W = 30
@@ -26,10 +26,12 @@ func (h *Hero) OnLoad() {
 
 	img, _ = ebiten.NewImage(int(h.W), int(h.H), ebiten.FilterDefault)
 	img.Fill(color.White)
+	return nil
 }
 
-var start =  time.Now()
-func (h *Hero) Update(screen *ebiten.Image) {
+var start = time.Now()
+
+func (h *Hero) Update(screen *ebiten.Image) (err error) {
 	dt := time.Now().Sub(start)
 	fmt.Println(dt)
 	duration := 1 * time.Second
@@ -53,4 +55,5 @@ func (h *Hero) Update(screen *ebiten.Image) {
 	//opts2.GeoM.Scale(b.ScaleW, b.ScaleH)
 	opts2.GeoM.Translate(h.X, h.Y)
 	screen.DrawImage(img, opts2)
+	return nil
 }

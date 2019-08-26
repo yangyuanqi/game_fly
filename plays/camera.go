@@ -2,14 +2,11 @@ package plays
 
 import (
 	"bytes"
-	"fmt"
 	"game_fly/core"
 	"game_fly/plays/assets/images"
 	"github.com/hajimehoshi/ebiten"
-	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"image"
 	"log"
-	"time"
 )
 
 var (
@@ -69,79 +66,86 @@ func init() {
 func NewGame() (game *Game) {
 	game = &Game{}
 	game.scenesIng = 1
-	game.W, game.H = 360, 640
+	game.W, game.H = 320, 480
 	return
 }
 
-func (g *Game) Onload() {
+func (g *Game) OnLoad() {
 	g.hero = NewRole(g, RoleImg, BulletImg)
-	g.hero.Onload()
+	core.AddSprite(g.hero, "role")
+	
+	core.AddSprite(NewInput(g), "input")
 
-	g.Input = NewInput(g)
-
-	params := Enemy{}
-	params.BulletStatus = 0
-	g.Enemy = NewEnemy(g, EnemyImg, BulletImg02, params)
-	g.Enemy.Onload()
 	//
-	core.SetTimer(time.Second*1, func() {
-		core.SetTicker(time.Millisecond*500, g.enemy01, 5)
-	})
-	core.SetTimer(time.Second*1, func() {
-		core.SetTicker(time.Millisecond*500, g.enemy02, 5)
-	})
-	core.SetTimer(time.Second*6, func() {
-		core.SetTicker(time.Millisecond*500, g.enemy01, 5)
-	})
-	core.SetTimer(time.Second*10, func() {
-		core.SetTicker(time.Millisecond*500, g.enemy02, 5)
-	})
-	core.SetTicker(time.Millisecond*500, g.enemy02, 0)
+	//g.hero = NewRole(g, RoleImg, BulletImg)
+	//g.hero.OnLoad()
+	//g.Input = NewInput(g)
+	//
+	//params := Enemy{}
+	//params.BulletStatus = 0
+	//g.Enemy = NewEnemy(g, EnemyImg, BulletImg02, params)
+	//g.Enemy.Onload()
+	//
+	//core.SetTimer(time.Second*1, func() {
+	//	core.SetTicker(time.Millisecond*500, g.enemy01, 5)
+	//})
+	//core.SetTimer(time.Second*1, func() {
+	//	core.SetTicker(time.Millisecond*500, g.enemy02, 5)
+	//})
+	//core.SetTimer(time.Second*6, func() {
+	//	core.SetTicker(time.Millisecond*500, g.enemy01, 5)
+	//})
+	//core.SetTimer(time.Second*10, func() {
+	//	core.SetTicker(time.Millisecond*500, g.enemy02, 5)
+	//})
+	//core.SetTicker(time.Millisecond*500, g.enemy02, 0)
 }
 
 func (g *Game) Update(screen *ebiten.Image) (err error) {
 	g.Screen = screen
-	g.Input.Update()
+	core.GetComponentUpdate(screen)
 
-	switch g.scenesIng {
-	case 0:
-	case 1:
-		if ebiten.IsDrawingSkipped() {
-			return nil
-		}
-
-		//渲染敌人
-		for _, v := range g.Enemys {
-			v.Update()
-		}
-
-		g.hero.Update()
-
-		msg := fmt.Sprintf(`fps:%.2f`, ebiten.CurrentFPS())
-		ebitenutil.DebugPrint(screen, msg)
-
-		fmt.Println(len(g.hero.GroupBullet))
-	case 100:
-		op := &ebiten.DrawImageOptions{}
-		screen.DrawImage(EndImg, op)
-	}
-
-	//销毁
-	for k, v := range g.Enemys {
-		if v.Visible == false {
-			if k < len(g.Enemys) {
-				g.Enemys = append(g.Enemys[:k], g.Enemys[k+1:]...)
-			}
-		}
-	}
-	for k, v := range g.hero.GroupBullet {
-		if v.Visible == false {
-			if k < len(g.hero.GroupBullet) {
-				g.hero.GroupBullet = append(g.hero.GroupBullet[:k], g.hero.GroupBullet[k+1:]...)
-			}
-		}
-	}
-
+	//g.Input.Update()
+	//
+	//switch g.scenesIng {
+	//case 0:
+	//case 1:
+	//	if ebiten.IsDrawingSkipped() {
+	//		return nil
+	//	}
+	//
+	//	//渲染敌人
+	//	for _, v := range g.Enemys {
+	//		v.Update()
+	//	}
+	//
+	//	g.hero.Update()
+	//
+	//	msg := fmt.Sprintf(`fps:%.2f`, ebiten.CurrentFPS())
+	//	ebitenutil.DebugPrint(screen, msg)
+	//
+	//	fmt.Println(len(g.hero.GroupBullet))
+	//case 100:
+	//	op := &ebiten.DrawImageOptions{}
+	//	screen.DrawImage(EndImg, op)
+	//}
+	//
+	////销毁
+	//for k, v := range g.Enemys {
+	//	if v.Visible == false {
+	//		if k < len(g.Enemys) {
+	//			g.Enemys = append(g.Enemys[:k], g.Enemys[k+1:]...)
+	//		}
+	//	}
+	//}
+	//for k, v := range g.hero.GroupBullet {
+	//	if v.Visible == false {
+	//		if k < len(g.hero.GroupBullet) {
+	//			g.hero.GroupBullet = append(g.hero.GroupBullet[:k], g.hero.GroupBullet[k+1:]...)
+	//		}
+	//	}
+	//}
+	//
 	return nil
 }
 

@@ -20,7 +20,7 @@ func (s *Scenes1) OnLoad() {
 			core.SetScenesIng("scen2")
 		}, 1)*/
 	hero := &Hero{}
-	core.RegisterComponent(hero)
+	//core.RegisterComponent(hero)
 	s.Hero = hero
 
 	stone := &Stone{}

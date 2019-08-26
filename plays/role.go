@@ -4,7 +4,6 @@ import (
 	"game_fly/core"
 	"github.com/hajimehoshi/ebiten"
 	"math"
-	"time"
 )
 
 type Role struct {
@@ -29,19 +28,19 @@ func NewRole(rootNode *Game, roleImg, bulletImg *ebiten.Image) (role *Role) {
 	return
 }
 
-func (r *Role) Onload() {
+func (r *Role) OnLoad() {
 	//1号自动子弹
-	core.SetTicker(time.Millisecond*200, r.AutoBullet01, 0)
+	//core.SetTicker(time.Millisecond*200, r.AutoBullet01, 0)
 }
 
-func (r *Role) Update() (err error) {
-	for _, v := range r.GroupBullet {
-		v.Update()
-	}
+func (r *Role) Update(screen *ebiten.Image) (err error) {
+	//for _, v := range r.GroupBullet {
+	//	v.Update()
+	//}
 
 	r.Drow()
 
-	r.CheckCollied()
+	//r.CheckCollied()
 
 	return nil
 }

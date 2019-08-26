@@ -5,13 +5,17 @@ import (
 )
 
 type Sprite struct {
-	X, Y    float64
-	W, H    int
-	ScaleW  float64
-	ScaleH  float64
-	MX, MY  float64 //运动规律，当实例化后怎么运动会依靠此参数
-	Visible bool    //隐藏
-	Component  []Component
+	X, Y      float64
+	W, H      int
+	ScaleW    float64
+	ScaleH    float64
+	MX, MY    float64 //运动规律，当实例化后怎么运动会依靠此参数
+	Visible   bool    //隐藏
+	Component []Component
+}
+
+func (s *Sprite) OnLoad() {
+
 }
 
 func (s *Sprite) Move() {

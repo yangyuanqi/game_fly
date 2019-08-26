@@ -17,7 +17,12 @@ func NewInput(rootNode *Game) (input *Input) {
 	return
 }
 
-func (i *Input) Update() (err error) {
+func OnLoad() (err error) {
+
+	return nil
+}
+
+func (i *Input) Update(screen *ebiten.Image) (err error) {
 	i.RootNode.hero.Left = 0
 	i.RootNode.hero.Right = 0
 
