@@ -73,7 +73,7 @@ func NewGame() (game *Game) {
 func (g *Game) OnLoad() {
 	g.hero = NewRole(g, RoleImg, BulletImg)
 	core.AddSprite(g.hero, "role")
-	
+
 	core.AddSprite(NewInput(g), "input")
 
 	//
