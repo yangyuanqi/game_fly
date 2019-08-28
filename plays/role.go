@@ -29,6 +29,7 @@ func NewRole(rootNode *Game, roleImg, bulletImg *ebiten.Image) (role *Role) {
 }
 
 func (r *Role) OnLoad() {
+	core.AddComponent(NewInput(r.RootNode), "input")
 	//1号自动子弹
 	//core.SetTicker(time.Millisecond*200, r.AutoBullet01, 0)
 }

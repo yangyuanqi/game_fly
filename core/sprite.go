@@ -11,7 +11,7 @@ var (
 	SpriteComponents = make(map[string]SpriteComponent)
 )
 
-func AddSprite(sprite SpriteComponent, name string) {
+func AddComponent(sprite SpriteComponent, name string) {
 	sprite.OnLoad()
 	SpriteComponents[name] = sprite
 }

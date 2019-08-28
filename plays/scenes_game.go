@@ -27,7 +27,14 @@ type Game struct {
 	Input     *Input   //输入
 }
 
-func init() {
+func NewGame() (game *Game) {
+	game = &Game{}
+	game.scenesIng = 1
+	game.W, game.H = 320, 480
+	return
+}
+
+func (g *Game) OnLoad() {
 	//角色贴图
 	img, _, err := image.Decode(bytes.NewReader(images.My_1))
 	if err != nil {
@@ -61,20 +68,9 @@ func init() {
 		log.Fatal(err)
 	}
 	EndImg, _ = ebiten.NewImageFromImage(img, ebiten.FilterDefault)
-}
 
-func NewGame() (game *Game) {
-	game = &Game{}
-	game.scenesIng = 1
-	game.W, game.H = 320, 480
-	return
-}
-
-func (g *Game) OnLoad() {
 	g.hero = NewRole(g, RoleImg, BulletImg)
-	core.AddSprite(g.hero, "role")
-
-	core.AddSprite(NewInput(g), "input")
+	core.AddComponent(g.hero, "role")
 
 	//
 	//g.hero = NewRole(g, RoleImg, BulletImg)
