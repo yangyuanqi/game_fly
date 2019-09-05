@@ -1,6 +1,8 @@
-package core
+package component
 
-import "github.com/hajimehoshi/ebiten"
+import (
+	"github.com/hajimehoshi/ebiten"
+)
 
 type SpriteComponent interface {
 	OnLoad()
@@ -20,8 +22,6 @@ func GetComponent(name string) (component SpriteComponent) {
 	return SpriteComponents[name]
 }
 
-func GetComponentUpdate(screen *ebiten.Image) {
-	for _, v := range SpriteComponents {
-		v.Update(screen)
-	}
+func ComponentLen() (l int) {
+	return len(SpriteComponents)
 }

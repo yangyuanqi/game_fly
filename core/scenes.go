@@ -10,20 +10,19 @@ type Scene interface {
 }
 
 var (
-	Scenes    = make(map[string]Scene)
+	Scenes    = make(map[string]interface{})
 	ScenesIng string
 )
 
 func RegisterScene(scenes Scene, name string) {
-	scenes.OnLoad()
 	Scenes[name] = scenes
 }
 
-func GetScene(name string) (scene Scene) {
+func GetScene(name string) (scene interface{}) {
 	return Scenes[name]
 }
 
 func SetScenesIng(name string) {
 	ScenesIng = name
-	Scenes[name].OnLoad()
+	Scenes[name].(Scene).OnLoad()
 }

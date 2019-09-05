@@ -1,4 +1,4 @@
-package plays
+package scripts
 
 import (
 	"game_fly/core"
@@ -49,12 +49,6 @@ func (e *Enemy) Update() (err error) {
 		e.Visible = false
 	}
 
-	for _, v := range e.GroupBillet {
-		if core.CheckCollision(v, e.RootNode.hero) {
-			e.RootNode.scenesIng = 100
-		}
-		v.Update()
-	}
 
 	e.Draw()
 	return nil

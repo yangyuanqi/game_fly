@@ -1,39 +1,21 @@
 package core
 
-import (
-	"math"
-)
+import "game_fly/core/component"
 
 type Sprite struct {
-	X, Y      float64
-	W, H      int
-	ScaleW    float64
-	ScaleH    float64
-	MX, MY    float64 //运动规律，当实例化后怎么运动会依靠此参数
-	Visible   bool    //隐藏
-	Component []Component
+	Id              string
+	X, Y            float64
+	W, H            int
+	ScaleW          float64
+	ScaleH          float64
+	MX, MY          float64 //运动规律，当实例化后怎么运动会依靠此参数
+	Visible         bool    //隐藏
+	SpriteComponent []component.SpriteComponent
+	Prefab          []component.SpriteComponent
 }
 
 func (s *Sprite) OnLoad() {
 
-}
-
-func (s *Sprite) Move() {
-	if s.MX > 0 {
-		s.X += s.MX
-		//s.Collide.X = int32(s.X)
-	} else if s.MX < 0 {
-		s.X -= math.Abs(s.MX)
-		//s.Collide.X = int32(s.X)
-	}
-
-	if s.MY > 0 {
-		s.Y += s.MY
-		//s.Collide.Y = int32(s.Y)
-	} else if s.MY < 0 {
-		s.Y -= math.Abs(s.MY)
-		//s.Collide.Y = int32(s.Y)
-	}
 }
 
 func (s *Sprite) SetXY(x, y float64) {
@@ -55,7 +37,6 @@ func (s *Sprite) GetPosition() (x, y float64, w, h int) {
 	return s.X, s.Y, s.W, s.H
 }
 
-func (s *Sprite) AddSystem(sys Component) {
-	s.Component = append(s.Component, sys)
-	return
+func (s *Sprite) GetPrefab() (prefab []component.SpriteComponent) {
+	return s.Prefab
 }

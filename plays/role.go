@@ -1,35 +1,54 @@
 package plays
 
 import (
+	"bytes"
+	"fmt"
 	"game_fly/core"
+	"game_fly/core/component"
+	"game_fly/plays/assets/images"
 	"github.com/hajimehoshi/ebiten"
+	"image"
+	"log"
 	"math"
 )
 
 type Role struct {
 	core.Sprite
-	RootNode    *Game
-	GroupBullet []*Bullet
-	Left        int
-	Right       int
-	RoleImg     *ebiten.Image
-	BulletImg   *ebiten.Image
+	RootNode  *Game
+	Left      int
+	Right     int
+	RoleImg   *ebiten.Image
+	BulletImg *ebiten.Image
 }
 
-func NewRole(rootNode *Game, roleImg, bulletImg *ebiten.Image) (role *Role) {
+var RoleImg *ebiten.Image
+
+func NewRole() (role *Role) {
 	role = &Role{}
-	role.RoleImg = roleImg
-	role.BulletImg = bulletImg
-	role.RootNode = rootNode
+
+	//role.BulletImg = bulletImg
+	//role.RootNode = rootNode
 	role.SetScale(0.3, 0.3)
-	w, h := roleImg.Size()
-	role.SetWH(int(math.Round(float64(w)*role.ScaleW)), int(math.Round(float64(h)*role.ScaleH)))
-	role.SetXY(math.Ceil(float64((role.RootNode.W-role.W)/2)), float64(role.RootNode.H-role.H))
 	return
 }
 
 func (r *Role) OnLoad() {
-	core.AddComponent(NewInput(r.RootNode), "input")
+	//角色贴图
+	img, _, err := image.Decode(bytes.NewReader(images.My_1))
+	if err != nil {
+		log.Fatal(err)
+	}
+	RoleImg, _ = ebiten.NewImageFromImage(img, ebiten.FilterDefault)
+	r.RoleImg = RoleImg
+
+	w, h := RoleImg.Size()
+	r.SetWH(int(math.Round(float64(w)*r.ScaleW)), int(math.Round(float64(h)*r.ScaleH)))
+	fmt.Println(1, core.GetScene("game"))
+	game := core.GetScene("game").(*Game)
+	r.SetXY(math.Ceil(float64((game.W-r.W)/2)), float64(game.H-r.H))
+
+	component.AddComponent(NewInput(), "input")
+
 	//1号自动子弹
 	//core.SetTicker(time.Millisecond*200, r.AutoBullet01, 0)
 }
@@ -38,6 +57,7 @@ func (r *Role) Update(screen *ebiten.Image) (err error) {
 	//for _, v := range r.GroupBullet {
 	//	v.Update()
 	//}
+
 
 	r.Drow()
 
@@ -66,37 +86,38 @@ func (r *Role) Drow() {
 	}
 
 	opts.GeoM.Translate(r.X, r.Y)
-	r.RootNode.Screen.DrawImage(r.RoleImg, opts)
+	core.GetScene("game").(*Game).Screen.DrawImage(r.RoleImg, opts)
+	//r.RootNode.Screen.DrawImage(r.RoleImg, opts)
 }
 
-func (r *Role) CheckCollied() {
-	//敌人和英雄
+//func (r *Role) CheckCollied() {
+//	//敌人和英雄
+//
+//	//英雄子弹和敌人
+//	for _, v := range r.RootNode.Enemys {
+//		for _, v2 := range r.GroupBullet {
+//			if v.Visible == true && v2.Visible == true && core.CheckCollision(v, v2) {
+//				v.Visible = false
+//				v2.Visible = false
+//
+//			}
+//		}
+//	}
+//}
 
-	//英雄子弹和敌人
-	for _, v := range r.RootNode.Enemys {
-		for _, v2 := range r.GroupBullet {
-			if v.Visible == true && v2.Visible == true && core.CheckCollision(v, v2) {
-				v.Visible = false
-				v2.Visible = false
-
-			}
-		}
-	}
-}
-
-var bullet *Bullet
-
-func (r *Role) AutoBullet01() {
-	for i := 1; i < 7; i++ {
-		if i > 3 {
-			bullet = NewBullet(r.RootNode, r, r.BulletImg)
-			bullet.MX = float64(i-3) / 10
-			bullet.MY = -10
-		} else {
-			bullet = NewBullet(r.RootNode, r, r.BulletImg)
-			bullet.MX = float64(-i) / 10
-			bullet.MY = -10
-		}
-		r.GroupBullet = append(r.GroupBullet, bullet)
-	}
-}
+//var bullet *Bullet
+//
+//func (r *Role) AutoBullet01() {
+//	for i := 1; i < 7; i++ {
+//		if i > 3 {
+//			bullet = NewBullet(r.RootNode, r, r.BulletImg)
+//			bullet.MX = float64(i-3) / 10
+//			bullet.MY = -10
+//		} else {
+//			bullet = NewBullet(r.RootNode, r, r.BulletImg)
+//			bullet.MX = float64(-i) / 10
+//			bullet.MY = -10
+//		}
+//		r.GroupBullet = append(r.GroupBullet, bullet)
+//	}
+//}

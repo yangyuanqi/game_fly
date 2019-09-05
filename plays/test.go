@@ -7,7 +7,7 @@ import (
 )
 
 type Stone struct {
-	core.BaseComponent
+	core.Sprite
 }
 
 var (

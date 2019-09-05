@@ -2,18 +2,18 @@ package plays
 
 import (
 	"game_fly/core"
+	"game_fly/core/component"
+	"game_fly/core/prefab"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/inpututil"
 )
 
 type Input struct {
 	core.Sprite
-	RootNode *Game
 }
 
-func NewInput(rootNode *Game) (input *Input) {
+func NewInput() (input *Input) {
 	input = &Input{}
-	input.RootNode = rootNode
 	return
 }
 
@@ -23,62 +23,66 @@ func OnLoad() (err error) {
 }
 
 func (i *Input) Update(screen *ebiten.Image) (err error) {
-	i.RootNode.hero.Left = 0
-	i.RootNode.hero.Right = 0
+	hero := component.GetComponent("role").(*Role)
+	game := core.GetScene("game").(*Game)
+	hero.Left = 0
+	hero.Right = 0
 
 	if ebiten.IsKeyPressed(ebiten.KeyUp) {
 		if v := inpututil.KeyPressDuration(ebiten.KeyUp); 0 < v {
 			if v == 1 || v%1 == 0 {
-				i.RootNode.hero.Y -= 5
+				hero.Y -= 5
 			}
 		}
-		if i.RootNode.hero.Y <= 0 {
-			i.RootNode.hero.Y = 0
+		if hero.Y <= 0 {
+			hero.Y = 0
 		}
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyDown) {
 		if v := inpututil.KeyPressDuration(ebiten.KeyDown); 0 < v {
 			if v == 1 || v%1 == 0 {
-				i.RootNode.hero.Y += 5
+				hero.Y += 5
 			}
 		}
-		if i.RootNode.hero.Y >= float64(i.RootNode.H)-float64(i.RootNode.hero.H) {
-			i.RootNode.hero.Y = float64(i.RootNode.H) - float64(i.RootNode.hero.H)
+		if hero.Y >= float64(game.H)-float64(hero.H) {
+			hero.Y = float64(game.H) - float64(hero.H)
 		}
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyLeft) {
 		if v := inpututil.KeyPressDuration(ebiten.KeyLeft); 0 < v {
 			if v == 1 || v%1 == 0 {
-				i.RootNode.hero.X -= 5
+				hero.X -= 5
 			}
-			i.RootNode.hero.Left = v
+			hero.Left = v
 		}
-		if i.RootNode.hero.X <= 0 {
-			i.RootNode.hero.X = 0
+		if hero.X <= 0 {
+			hero.X = 0
 		}
 	}
-	// 當「按鍵右」被按下時⋯⋯
+
 	if ebiten.IsKeyPressed(ebiten.KeyRight) {
 		if v := inpututil.KeyPressDuration(ebiten.KeyRight); 0 < v {
 			if v == 1 || v%1 == 0 {
-				i.RootNode.hero.X += 5
+				hero.X += 5
 			}
-			i.RootNode.hero.Right = v
+			hero.Right = v
 		}
-		if i.RootNode.hero.X >= float64(i.RootNode.W)-float64(i.RootNode.hero.W) {
-			i.RootNode.hero.X = float64(i.RootNode.W) - float64(i.RootNode.hero.W)
+		if hero.X >= float64(game.W)-float64(hero.W) {
+			hero.X = float64(game.W) - float64(hero.W)
 		}
 	}
 
 	if ebiten.IsKeyPressed(ebiten.KeySpace) {
 		if v := inpututil.KeyPressDuration(ebiten.KeySpace); 0 < v {
 			if v == 1 {
-				bullet := NewBullet(i.RootNode, i.RootNode.hero, BulletImg)
-				bullet.MY = -10
-				i.RootNode.hero.GroupBullet = append(i.RootNode.hero.GroupBullet, bullet)
+				bullet := NewBullet(BulletImg)
+				bullet.Move = func(bullet2 *Bullet) {
+					bullet2.Y -= 10
+				}
+
+				prefab.AddPrefab(bullet, bullet.Id)
 			}
 		}
-		i.RootNode.scenesIng = 1
 	}
 
 	return nil

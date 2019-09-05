@@ -3,6 +3,7 @@ package plays
 import (
 	"bytes"
 	"game_fly/core"
+	"game_fly/core/component"
 	"game_fly/plays/assets/images"
 	"github.com/hajimehoshi/ebiten"
 	"image"
@@ -10,7 +11,6 @@ import (
 )
 
 var (
-	RoleImg     *ebiten.Image
 	BulletImg   *ebiten.Image
 	BulletImg02 *ebiten.Image
 	EnemyImg    *ebiten.Image
@@ -18,31 +18,20 @@ var (
 )
 
 type Game struct {
-	W, H      int           //屏幕size
-	Screen    *ebiten.Image //屏幕
-	scenesIng int           //场景0初始化面，1第一关，2第二关，100结束画面
-	hero      *Role         //英雄
-	Enemy     *Enemy
-	Enemys    []*Enemy //敌军
-	Input     *Input   //输入
+	core.Sprite
+	//geo.Rect
+	Screen  *ebiten.Image //屏幕
 }
 
 func NewGame() (game *Game) {
 	game = &Game{}
-	game.scenesIng = 1
 	game.W, game.H = 320, 480
 	return
 }
 
 func (g *Game) OnLoad() {
-	//角色贴图
-	img, _, err := image.Decode(bytes.NewReader(images.My_1))
-	if err != nil {
-		log.Fatal(err)
-	}
-	RoleImg, _ = ebiten.NewImageFromImage(img, ebiten.FilterDefault)
 	//子弹贴图
-	img, _, err = image.Decode(bytes.NewReader(images.Myb_1))
+	img, _, err := image.Decode(bytes.NewReader(images.Myb_1))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -69,37 +58,17 @@ func (g *Game) OnLoad() {
 	}
 	EndImg, _ = ebiten.NewImageFromImage(img, ebiten.FilterDefault)
 
-	g.hero = NewRole(g, RoleImg, BulletImg)
-	core.AddComponent(g.hero, "role")
+	component.AddComponent(NewRole(), "role")
 
-	//
-	//g.hero = NewRole(g, RoleImg, BulletImg)
-	//g.hero.OnLoad()
-	//g.Input = NewInput(g)
-	//
-	//params := Enemy{}
-	//params.BulletStatus = 0
-	//g.Enemy = NewEnemy(g, EnemyImg, BulletImg02, params)
-	//g.Enemy.Onload()
-	//
-	//core.SetTimer(time.Second*1, func() {
-	//	core.SetTicker(time.Millisecond*500, g.enemy01, 5)
-	//})
-	//core.SetTimer(time.Second*1, func() {
-	//	core.SetTicker(time.Millisecond*500, g.enemy02, 5)
-	//})
-	//core.SetTimer(time.Second*6, func() {
-	//	core.SetTicker(time.Millisecond*500, g.enemy01, 5)
-	//})
-	//core.SetTimer(time.Second*10, func() {
-	//	core.SetTicker(time.Millisecond*500, g.enemy02, 5)
-	//})
-	//core.SetTicker(time.Millisecond*500, g.enemy02, 0)
 }
 
 func (g *Game) Update(screen *ebiten.Image) (err error) {
 	g.Screen = screen
 	core.GetComponentUpdate(screen)
+
+	//for _, v := range g.SpriteComponent {
+	//	v.Update(screen)
+	//}
 
 	//g.Input.Update()
 	//
@@ -143,26 +112,4 @@ func (g *Game) Update(screen *ebiten.Image) (err error) {
 	//}
 	//
 	return nil
-}
-
-//第一波敌人
-func (g *Game) enemy01() {
-	//敌人
-	var enemy *Enemy
-	enemy = NewEnemy(g, EnemyImg, BulletImg02, Enemy{BulletStatus: 1})
-	enemy.Onload()
-	enemy.MY = 4
-	enemy.MX = 3
-	g.Enemys = append(g.Enemys, enemy)
-}
-func (g *Game) enemy02() {
-	//敌人
-	var enemy *Enemy
-	enemy = NewEnemy(g, EnemyImg, BulletImg02, Enemy{BulletStatus: 1})
-	enemy.Onload()
-	enemy.X = float64(g.W - g.Enemy.W)
-	enemy.Y = 0
-	enemy.MY = 4
-	enemy.MX = -3
-	g.Enemys = append(g.Enemys, enemy)
 }

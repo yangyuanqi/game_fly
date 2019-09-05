@@ -1,4 +1,4 @@
-package plays
+package scripts
 
 import (
 	"fmt"
