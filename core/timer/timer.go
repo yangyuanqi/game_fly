@@ -18,7 +18,7 @@ func SetTimer(duration time.Duration, f func()) {
 
 func SetTicker(duration time.Duration, f func(), n int) {
 	var i int
-	go func() {
+	go func(i int) {
 		ticker := time.NewTicker(duration)
 		for {
 			select {
@@ -30,5 +30,5 @@ func SetTicker(duration time.Duration, f func(), n int) {
 				i++
 			}
 		}
-	}()
+	}(i)
 }

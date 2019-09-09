@@ -2,8 +2,8 @@ package plays
 
 import (
 	"game_fly/core"
-	"game_fly/core/component"
 	"game_fly/core/prefab"
+	"game_fly/core/sprite"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/inpututil"
 )
@@ -12,18 +12,20 @@ type Input struct {
 	core.Sprite
 }
 
-func NewInput() (input *Input) {
-	input = &Input{}
-	return
+func (i *Input) Create() (input *Input) {
+	return i
 }
 
-func OnLoad() (err error) {
+func (i *Input) OnLoad() {
 
-	return nil
+}
+
+func (i *Input) Start() {
+
 }
 
 func (i *Input) Update(screen *ebiten.Image) (err error) {
-	hero := component.GetComponent("role").(*Role)
+	hero := sprite.GetSprite("game", "role").(*Role)
 	game := core.GetScene("game").(*Game)
 	hero.Left = 0
 	hero.Right = 0
@@ -75,12 +77,12 @@ func (i *Input) Update(screen *ebiten.Image) (err error) {
 	if ebiten.IsKeyPressed(ebiten.KeySpace) {
 		if v := inpututil.KeyPressDuration(ebiten.KeySpace); 0 < v {
 			if v == 1 {
-				bullet := NewBullet(BulletImg)
+				bullet := &Bullet{}
+				bullet.Create(BulletImg)
 				bullet.Move = func(bullet2 *Bullet) {
 					bullet2.Y -= 10
 				}
-
-				prefab.AddPrefab(bullet, bullet.Id)
+				prefab.AddPrefab(bullet, "roleBullet")
 			}
 		}
 	}

@@ -6,7 +6,13 @@ import (
 
 type SpriteComponent interface {
 	OnLoad()
+	Start()
 	Update(screen *ebiten.Image) (err error)
+	GetResolv() (collision interface{})
+	UpdateResolv()
+	GetId() (id string)
+	GetName()(name string)
+	GetComponent() (components []SpriteComponent)
 }
 
 var (

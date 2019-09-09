@@ -2,7 +2,6 @@ package plays
 
 import (
 	"bytes"
-	"fmt"
 	"game_fly/core"
 	"game_fly/core/component"
 	"game_fly/plays/assets/images"
@@ -14,22 +13,18 @@ import (
 
 type Role struct {
 	core.Sprite
-	RootNode  *Game
-	Left      int
-	Right     int
-	RoleImg   *ebiten.Image
-	BulletImg *ebiten.Image
+	RootNode *Game
+	Left     int
+	Right    int
 }
 
 var RoleImg *ebiten.Image
 
-func NewRole() (role *Role) {
-	role = &Role{}
-
-	//role.BulletImg = bulletImg
-	//role.RootNode = rootNode
-	role.SetScale(0.3, 0.3)
-	return
+func (r *Role) Create() (role *Role) {
+	r.Sprite.Create()
+	r.Name = "role"
+	r.SetScale(0.3, 0.3)
+	return r
 }
 
 func (r *Role) OnLoad() {
@@ -39,29 +34,37 @@ func (r *Role) OnLoad() {
 		log.Fatal(err)
 	}
 	RoleImg, _ = ebiten.NewImageFromImage(img, ebiten.FilterDefault)
-	r.RoleImg = RoleImg
+	r.Img = RoleImg
 
 	w, h := RoleImg.Size()
 	r.SetWH(int(math.Round(float64(w)*r.ScaleW)), int(math.Round(float64(h)*r.ScaleH)))
-	fmt.Println(1, core.GetScene("game"))
 	game := core.GetScene("game").(*Game)
 	r.SetXY(math.Ceil(float64((game.W-r.W)/2)), float64(game.H-r.H))
 
-	component.AddComponent(NewInput(), "input")
+	input := &Input{}
+	input.Create()
+	component.AddComponent(input, "input")
 
 	//1号自动子弹
 	//core.SetTicker(time.Millisecond*200, r.AutoBullet01, 0)
 }
 
+func (r *Role) Start() {
+
+}
+
 func (r *Role) Update(screen *ebiten.Image) (err error) {
-	//for _, v := range r.GroupBullet {
-	//	v.Update()
-	//}
-
-
 	r.Drow()
 
-	//r.CheckCollied()
+	//roleEnemy := prefab.GetPrefabAll("roleBullet")
+	//for _, v := range roleEnemy {
+	//	for _, v2 := range sprite.GetSpriteAll("enemy") {
+	//		colliding := v.GetResolv().(*resolv.Rectangle).IsColliding(v2.GetResolv().(*resolv.Rectangle))
+	//		if colliding {
+	//			fmt.Println("发生碰撞")
+	//		}
+	//	}
+	//}
 
 	return nil
 }
@@ -86,8 +89,7 @@ func (r *Role) Drow() {
 	}
 
 	opts.GeoM.Translate(r.X, r.Y)
-	core.GetScene("game").(*Game).Screen.DrawImage(r.RoleImg, opts)
-	//r.RootNode.Screen.DrawImage(r.RoleImg, opts)
+	core.GetScene("game").(*Game).Screen.DrawImage(r.Img, opts)
 }
 
 //func (r *Role) CheckCollied() {

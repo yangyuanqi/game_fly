@@ -1,21 +1,34 @@
 package core
 
-import "game_fly/core/component"
+import (
+	"game_fly/core/component"
+	"github.com/SolarLune/resolv/resolv"
+	"github.com/hajimehoshi/ebiten"
+	"strconv"
+)
 
 type Sprite struct {
-	Id              string
-	X, Y            float64
-	W, H            int
-	ScaleW          float64
-	ScaleH          float64
-	MX, MY          float64 //运动规律，当实例化后怎么运动会依靠此参数
-	Visible         bool    //隐藏
-	SpriteComponent []component.SpriteComponent
-	Prefab          []component.SpriteComponent
+	Id        string
+	Name      string
+	X, Y      float64
+	W, H      int
+	ScaleW    float64
+	ScaleH    float64
+	Visible   bool          //隐藏
+	Img       *ebiten.Image //子弹贴图
+	Component []component.SpriteComponent
+	Collision *resolv.Rectangle
 }
 
 func (s *Sprite) OnLoad() {
 
+}
+
+//初始化系统属性
+func (s *Sprite) Create() {
+	ID++
+	id := "bullet" + strconv.Itoa(ID)
+	s.Id = id
 }
 
 func (s *Sprite) SetXY(x, y float64) {
@@ -33,10 +46,34 @@ func (s *Sprite) SetScale(sw, sh float64) {
 	s.ScaleH = sh
 }
 
-func (s *Sprite) GetPosition() (x, y float64, w, h int) {
-	return s.X, s.Y, s.W, s.H
+func (s *Sprite) GetName() (name string) {
+	return s.Name
 }
 
-func (s *Sprite) GetPrefab() (prefab []component.SpriteComponent) {
-	return s.Prefab
+func (s *Sprite) GetPosition() (x, y, w, h int32) {
+	return int32(s.X), int32(s.Y), int32(s.W), int32(s.H)
+}
+
+func (s *Sprite) GetId() (id string) {
+	return s.Id
+}
+
+func (s *Sprite) GetResolv() (collision interface{}) {
+	collision = s.Collision
+	return
+}
+
+//同步碰撞
+func (s *Sprite) UpdateResolv() {
+	if s.Collision != nil {
+		s.Collision.SetXY(int32(s.X), int32(s.Y))
+	}
+}
+
+func (s *Sprite) AddComponent(component component.SpriteComponent) {
+	s.Component = append(s.Component, component)
+}
+
+func (s *Sprite) GetComponent() (components []component.SpriteComponent) {
+	return s.Component
 }

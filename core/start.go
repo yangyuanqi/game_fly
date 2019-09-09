@@ -2,25 +2,22 @@ package core
 
 import (
 	"game_fly/core/sprite"
-	"github.com/hajimehoshi/ebiten"
 )
 
-func GetComponentUpdate(screen *ebiten.Image) {
+func GetComponentStart() {
 	//渲染精灵
 	for _, v := range sprite.Sprites {
 		for _, v2 := range v.Sprite {
-			v2.UpdateResolv()
-			v2.Update(screen)
+			v2.Start()
 			for _, v3 := range v2.GetComponent() {
-				v3.Update(screen)
+				v3.Start()
 			}
 		}
 		//渲染预制体
 		for _, v2 := range v.Prefab {
-			v2.UpdateResolv()
-			v2.Update(screen)
+			v2.Start()
 			for _, v3 := range v2.GetComponent() {
-				v3.Update(screen)
+				v3.Start()
 			}
 		}
 	}

@@ -2,19 +2,18 @@ package main
 
 import "fmt"
 
+type Abc struct {
+	data map[string]string
+}
+
 func main() {
-	defer fmt.Println("主协程马上结束")
-	ch2 := make(chan string)
-	go func() {
-		defer fmt.Println("子协程马上结束")
-		/*		for i := 0; i < 5; i++ {
-					fmt.Println("i = ", i)
-				}*/
-		ch2 <- "子协程结束"
-	}()
+	var Prefab []Abc
+	Prefab = append(Prefab, Abc{data: map[string]string{"a": "b"}})
+	for k, v := range Prefab {
+		if k==0{
+			v.data["c"] = "d"
+		}
+	}
 
-	<-ch2
-
-	//fmt.Println(str)
-	//fmt.Println("主协程开始")
+	fmt.Println(Prefab)
 }

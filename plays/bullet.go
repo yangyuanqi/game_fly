@@ -2,51 +2,49 @@ package plays
 
 import (
 	"game_fly/core"
-	"game_fly/core/component"
-	"game_fly/core/prefab"
+	"game_fly/core/sprite"
+	"github.com/SolarLune/resolv/resolv"
 	"github.com/hajimehoshi/ebiten"
 	"math"
-	"strconv"
 )
 
 type Bullet struct {
 	core.Sprite
-	Img      *ebiten.Image //子弹贴图
 	roleNode Role
 	gameNode Game
 	Move     func(bullet *Bullet)
 }
 
-func NewBullet(img *ebiten.Image) (bullet *Bullet) {
-	bullet = &Bullet{}
-	//生成id
-	core.ID++
-	id := "bullet" + strconv.Itoa(core.ID)
-	bullet.Id = id
-	//获取节点
-	bullet.roleNode = *component.GetComponent("role").(*Role)
-	bullet.gameNode = *core.GetScene("game").(*Game)
+func (b *Bullet) Create(img *ebiten.Image) (bullet *Bullet) {
+	b.Sprite.Create()
 	//贴图
-	bullet.Img = img
+	b.Img = img
 	//初始化属性
-	bullet.Visible = true
-	bullet.SetScale(0.2, 0.2)
-	bullet.MY = -10
+	b.Visible = true
+	b.SetScale(0.2, 0.2)
 	rw, rh := BulletImg.Size()
-	bullet.SetWH(int(math.Round(float64(rw)*bullet.ScaleW)), int(math.Round(float64(rh)*bullet.ScaleH)))
-	bullet.SetXY(bullet.roleNode.X+math.Ceil(float64(bullet.roleNode.W-bullet.W)/2), bullet.roleNode.Y)
-	return
+	b.SetWH(int(math.Round(float64(rw)*b.ScaleW)), int(math.Round(float64(rh)*b.ScaleH)))
+	b.SetXY(b.roleNode.X+math.Ceil(float64(b.roleNode.W-b.W)/2), b.roleNode.Y)
+	//添加碰撞
+	b.Collision = resolv.NewRectangle(b.GetPosition())
+	return b
 }
 
 func (b *Bullet) OnLoad() {
+	//获取节点
+	b.roleNode = *sprite.GetSprite("game", "role").(*Role)
+	b.gameNode = *core.GetScene("game").(*Game)
+}
+
+func (b *Bullet) Start() {
 
 }
 
 func (b *Bullet) Update(screen *ebiten.Image) (err error) {
 	//到达边界删除b
-	if b.Y > float64(b.gameNode.H) || b.Y < 0 {
-		prefab.DelPrefab(b.Id)
-	}
+	//if b.Y > float64(b.gameNode.H) || b.Y < 0 {
+	//	prefab.DelPrefab("roleBullet", b.Id)
+	//}
 	b.Move(b)
 
 	if ebiten.IsDrawingSkipped() {
