@@ -2,6 +2,7 @@ package prefab
 
 import (
 	"game_fly/core/component"
+	"game_fly/core/data"
 	"game_fly/core/sprite"
 )
 
@@ -28,7 +29,7 @@ func AddPrefab(prefab component.SpriteComponent, groupName string) {
 	if flg == false {
 		newPrefab := make(map[string]component.SpriteComponent)
 		newPrefab[prefab.GetId()] = prefab
-		sprite.Sprites = append(sprite.Sprites, sprite.SpriteGroup{GroupName: groupName, Prefab: newPrefab})
+		sprite.Sprites = append(sprite.Sprites, data.SpriteGroup{GroupName: groupName, Prefab: newPrefab})
 	}
 }
 

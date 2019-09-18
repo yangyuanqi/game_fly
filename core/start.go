@@ -20,5 +20,9 @@ func GetComponentStart() {
 				v3.Start()
 			}
 		}
+		//ui
+		for _, v2 := range v.Ui {
+			v2.Start()
+		}
 	}
 }

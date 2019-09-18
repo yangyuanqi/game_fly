@@ -6,16 +6,17 @@ import (
 	"game_fly/core"
 	"game_fly/core/ui"
 	"game_fly/plays/assets/images"
-	"game_fly/plays/assets/images/ui_img"
+	"game_fly/plays/assets/images/ui_img2"
 	"github.com/hajimehoshi/ebiten"
 	"image"
+	_ "image/jpeg"
+	_ "image/png"
 	"log"
 	"strconv"
 )
 
 type Login struct {
 	core.Sprite
-	Screen *ebiten.Image //屏幕
 }
 
 var LoginImg *ebiten.Image
@@ -27,7 +28,7 @@ func NewLogin() (login *Login) {
 }
 
 func (l *Login) OnLoad() {
-	img, _, err := image.Decode(bytes.NewReader(images.Load))
+	img, _, err := image.Decode(bytes.NewReader(images.M1_jpg))
 	if err != nil {
 		log.Fatal("loginImg:", err)
 	}
@@ -37,13 +38,15 @@ func (l *Login) OnLoad() {
 	l.ScaleW, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", float64(l.W)/float64(LoginImgW)), 64)
 	l.ScaleH, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", float64(l.H)/float64(LoginImgH)), 64)
 
-	img, _, err = image.Decode(bytes.NewReader(ui_img.UI_png))
+	img, _, err = image.Decode(bytes.NewReader(ui_img2.UI_png))
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("login2",err)
 	}
 	UiImage, _ = ebiten.NewImageFromImage(img, ebiten.FilterDefault)
 
 	button1.SetOnPressed(func(b *ui.Button) {
+		//初始化后，切换到下一个场景,可配置加载场景动画
+		core.RegisterScene(NewGame(), "game")
 		core.SetScenesIng("game")
 	})
 }

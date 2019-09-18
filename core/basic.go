@@ -8,15 +8,16 @@ import (
 )
 
 type Sprite struct {
-	Id        string
-	Name      string
+	Id        string //唯一标识
+	Name      string //变量名称
 	X, Y      float64
 	W, H      int
 	ScaleW    float64
 	ScaleH    float64
 	Visible   bool          //隐藏
-	Img       *ebiten.Image //子弹贴图
-	Component []component.SpriteComponent
+	Material  *ebiten.Image //材质
+	//Screen    *ebiten.Image
+	Component []component.SpriteComponent //组件
 	Collision *resolv.Rectangle
 }
 
@@ -27,7 +28,7 @@ func (s *Sprite) OnLoad() {
 //初始化系统属性
 func (s *Sprite) Create() {
 	ID++
-	id := "bullet" + strconv.Itoa(ID)
+	id := strconv.Itoa(ID)
 	s.Id = id
 }
 
@@ -74,6 +75,16 @@ func (s *Sprite) AddComponent(component component.SpriteComponent) {
 	s.Component = append(s.Component, component)
 }
 
+//func (s *Sprite) SetScreen(screen *ebiten.Image) {
+//	if s.Screen == nil {
+//		s.Screen = screen
+//	}
+//}
+
 func (s *Sprite) GetComponent() (components []component.SpriteComponent) {
 	return s.Component
+}
+
+type Component struct {
+	Sprite
 }

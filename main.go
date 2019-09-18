@@ -17,6 +17,7 @@ func main() {
 	game.Start()
 
 	ebiten.Run(game.Update, 320, 480, 1, "灰机大战")
+	//ebiten.Run(game.Update, 300, 300, 1, "灰机大战")
 }
 
 type Core struct {
@@ -25,10 +26,12 @@ type Core struct {
 func (c *Core) OnLoad() {
 	//场景切换示例
 	//core.SetTimer(time.Second*5, func() {
-	core.RegisterScene(plays.NewGame(), "game")
-	core.SetScenesIng("game")
-	//})
+	//注册场景
 	core.RegisterScene(plays.NewLogin(), "login")
+	//core.RegisterScene(plays.NewScenesHello(), "hello")
+	core.SetScenesIng("login")
+	//})
+
 	//core.SetScenesIng("login")
 }
 
@@ -37,7 +40,10 @@ func (c *Core) Start() {
 }
 
 func (c *Core) Update(screen *ebiten.Image) (err error) {
+	core.RootNode = screen
+	//渲染场景
 	core.GetScene(core.ScenesIng).(core.Scene).Update(screen)
+	//渲染精灵，组件
 	core.GetComponentUpdate(screen)
 	msg := fmt.Sprintf(`fps:%.2f  componentNum:%d`, ebiten.CurrentFPS(), prefab.PrefabLen())
 	ebitenutil.DebugPrint(screen, msg)

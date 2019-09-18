@@ -9,11 +9,12 @@ import (
 
 type Enemy struct {
 	core.Sprite
-
+	Img      *ebiten.Image //子弹贴图
 	RoleNode Role
 }
 
-func (e *Enemy) Create(img *ebiten.Image) (enemy *Enemy) {
+func NewEnemy(img *ebiten.Image) (enemy *Enemy) {
+	e := &Enemy{}
 	e.Sprite.Create()
 	e.Img = img
 	w, h := e.Img.Size()
@@ -22,9 +23,7 @@ func (e *Enemy) Create(img *ebiten.Image) (enemy *Enemy) {
 	e.SetXY(0, 0)
 
 	e.Collision = resolv.NewRectangle(e.GetPosition())
-
-	enemy = e
-	return
+	return e
 }
 
 //加载资源
@@ -32,7 +31,7 @@ func (e *Enemy) OnLoad() {
 
 }
 
-func(e *Enemy)Start(){
+func (e *Enemy) Start() {
 
 }
 

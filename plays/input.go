@@ -9,11 +9,11 @@ import (
 )
 
 type Input struct {
-	core.Sprite
+	core.Component
 }
 
-func (i *Input) Create() (input *Input) {
-	return i
+func NewInput() (input *Input) {
+	return &Input{}
 }
 
 func (i *Input) OnLoad() {
@@ -77,8 +77,7 @@ func (i *Input) Update(screen *ebiten.Image) (err error) {
 	if ebiten.IsKeyPressed(ebiten.KeySpace) {
 		if v := inpututil.KeyPressDuration(ebiten.KeySpace); 0 < v {
 			if v == 1 {
-				bullet := &Bullet{}
-				bullet.Create(BulletImg)
+				bullet := NewBullet(BulletImg)
 				bullet.Move = func(bullet2 *Bullet) {
 					bullet2.Y -= 10
 				}

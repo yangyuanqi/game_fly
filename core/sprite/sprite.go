@@ -2,17 +2,13 @@ package sprite
 
 import (
 	"game_fly/core/component"
+	"game_fly/core/data"
 )
 
-type SpriteGroup struct {
-	GroupName string
-	Sprite    []component.SpriteComponent//有顺序要求
-	Prefab    map[string]component.SpriteComponent
-}
 
 var (
 	//Sprites = make(map[string][]component.SpriteComponent)
-	Sprites []SpriteGroup
+	Sprites []data.SpriteGroup
 )
 
 func AddSprite(sprite component.SpriteComponent, groupName string) {
@@ -28,7 +24,7 @@ func AddSprite(sprite component.SpriteComponent, groupName string) {
 
 	if flg == false {
 		newSprite := []component.SpriteComponent{sprite}
-		Sprites = append(Sprites, SpriteGroup{GroupName: groupName, Sprite: newSprite})
+		Sprites = append(Sprites, data.SpriteGroup{GroupName: groupName, Sprite: newSprite})
 	}
 
 }

@@ -24,10 +24,13 @@ func SetTicker(duration time.Duration, f func(), n int) {
 			select {
 			case <-ticker.C:
 				f()
-				if n > 0 && n == i {
-					ticker.Stop()
+				if n > 0 {
+					if n == i {
+						ticker.Stop()
+						return //退出携程
+					}
+					i++
 				}
-				i++
 			}
 		}
 	}(i)

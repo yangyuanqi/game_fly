@@ -3,10 +3,15 @@ package plays
 import (
 	"bytes"
 	"game_fly/core"
-	"game_fly/core/component"
+	"game_fly/core/prefab"
+	"game_fly/core/sprite"
+	"game_fly/core/ui"
 	"game_fly/plays/assets/images"
+	"github.com/SolarLune/resolv/resolv"
 	"github.com/hajimehoshi/ebiten"
 	"image"
+	_ "image/jpeg"
+	_ "image/png"
 	"log"
 	"math"
 )
@@ -16,11 +21,14 @@ type Role struct {
 	RootNode *Game
 	Left     int
 	Right    int
+	Img      *ebiten.Image
+	Fraction int
 }
 
 var RoleImg *ebiten.Image
 
-func (r *Role) Create() (role *Role) {
+func NewRole() (role *Role) {
+	r := &Role{}
 	r.Sprite.Create()
 	r.Name = "role"
 	r.SetScale(0.3, 0.3)
@@ -31,7 +39,7 @@ func (r *Role) OnLoad() {
 	//角色贴图
 	img, _, err := image.Decode(bytes.NewReader(images.My_1))
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(6, err)
 	}
 	RoleImg, _ = ebiten.NewImageFromImage(img, ebiten.FilterDefault)
 	r.Img = RoleImg
@@ -41,10 +49,7 @@ func (r *Role) OnLoad() {
 	game := core.GetScene("game").(*Game)
 	r.SetXY(math.Ceil(float64((game.W-r.W)/2)), float64(game.H-r.H))
 
-	input := &Input{}
-	input.Create()
-	component.AddComponent(input, "input")
-
+	r.AddComponent(NewInput())
 	//1号自动子弹
 	//core.SetTicker(time.Millisecond*200, r.AutoBullet01, 0)
 }
@@ -54,22 +59,25 @@ func (r *Role) Start() {
 }
 
 func (r *Role) Update(screen *ebiten.Image) (err error) {
-	r.Drow()
+	r.Drow(screen)
 
-	//roleEnemy := prefab.GetPrefabAll("roleBullet")
-	//for _, v := range roleEnemy {
-	//	for _, v2 := range sprite.GetSpriteAll("enemy") {
-	//		colliding := v.GetResolv().(*resolv.Rectangle).IsColliding(v2.GetResolv().(*resolv.Rectangle))
-	//		if colliding {
-	//			fmt.Println("发生碰撞")
-	//		}
-	//	}
-	//}
+	roleBullet := prefab.GetPrefabAll("roleBullet")
+	for _, v := range roleBullet {
+		for _, v2 := range sprite.GetSpriteAll("enemy") {
+			colliding := v.GetResolv().(*resolv.Rectangle).IsColliding(v2.GetResolv().(*resolv.Rectangle))
+			if colliding {
+				ui.ReplaceUi("ui", "number1", ui.NewNumber(r.Fraction, 200, 10, 0.5))
+				r.Fraction++
+				prefab.DelPrefab("roleBullet", v.GetId())
+				//fmt.Println("发生碰撞")
+			}
+		}
+	}
 
 	return nil
 }
 
-func (r *Role) Drow() {
+func (r *Role) Drow(screen *ebiten.Image) {
 	opts := &ebiten.DrawImageOptions{}
 	opts.GeoM.Reset()
 	opts.GeoM.Scale(r.ScaleW, r.ScaleH)
@@ -89,7 +97,7 @@ func (r *Role) Drow() {
 	}
 
 	opts.GeoM.Translate(r.X, r.Y)
-	core.GetScene("game").(*Game).Screen.DrawImage(r.Img, opts)
+	screen.DrawImage(r.Img, opts)
 }
 
 //func (r *Role) CheckCollied() {

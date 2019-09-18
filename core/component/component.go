@@ -11,7 +11,8 @@ type SpriteComponent interface {
 	GetResolv() (collision interface{})
 	UpdateResolv()
 	GetId() (id string)
-	GetName()(name string)
+	GetName() (name string)
+	//SetScreen(image *ebiten.Image)
 	GetComponent() (components []SpriteComponent)
 }
 
