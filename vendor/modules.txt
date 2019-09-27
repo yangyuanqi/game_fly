@@ -1,0 +1,67 @@
+# github.com/SolarLune/resolv v0.0.0-20190821203317-2f6176d8d107
+github.com/SolarLune/resolv/resolv
+# github.com/go-gl/glfw v0.0.0-20181213070059-819e8ce5125f
+github.com/go-gl/glfw/v3.2/glfw
+# github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
+github.com/golang/freetype/raster
+github.com/golang/freetype/truetype
+# github.com/gopherjs/gopherjs v0.0.0-20180825215210-0210a2f0f73c
+github.com/gopherjs/gopherjs/js
+# github.com/gopherjs/gopherwasm v1.1.0
+github.com/gopherjs/gopherwasm/js
+# github.com/hajimehoshi/ebiten v1.9.3
+github.com/hajimehoshi/ebiten
+github.com/hajimehoshi/ebiten/ebitenutil
+github.com/hajimehoshi/ebiten/ebitenutil/internal/assets
+github.com/hajimehoshi/ebiten/inpututil
+github.com/hajimehoshi/ebiten/internal/affine
+github.com/hajimehoshi/ebiten/internal/clock
+github.com/hajimehoshi/ebiten/internal/devicescale
+github.com/hajimehoshi/ebiten/internal/glfw
+github.com/hajimehoshi/ebiten/internal/graphics
+github.com/hajimehoshi/ebiten/internal/graphicscommand
+github.com/hajimehoshi/ebiten/internal/graphicsdriver
+github.com/hajimehoshi/ebiten/internal/graphicsdriver/metal
+github.com/hajimehoshi/ebiten/internal/graphicsdriver/metal/ca
+github.com/hajimehoshi/ebiten/internal/graphicsdriver/metal/mtl
+github.com/hajimehoshi/ebiten/internal/graphicsdriver/metal/ns
+github.com/hajimehoshi/ebiten/internal/graphicsdriver/opengl
+github.com/hajimehoshi/ebiten/internal/graphicsdriver/opengl/gl
+github.com/hajimehoshi/ebiten/internal/hooks
+github.com/hajimehoshi/ebiten/internal/input
+github.com/hajimehoshi/ebiten/internal/mainthread
+github.com/hajimehoshi/ebiten/internal/packing
+github.com/hajimehoshi/ebiten/internal/png
+github.com/hajimehoshi/ebiten/internal/restorable
+github.com/hajimehoshi/ebiten/internal/shareable
+github.com/hajimehoshi/ebiten/internal/ui
+github.com/hajimehoshi/ebiten/internal/web
+github.com/hajimehoshi/ebiten/text
+# golang.org/x/exp v0.0.0-20180710024300-14dda7b62fcd
+golang.org/x/exp/shiny/driver/gldriver
+golang.org/x/exp/shiny/driver/internal/drawer
+golang.org/x/exp/shiny/driver/internal/errscreen
+golang.org/x/exp/shiny/driver/internal/event
+golang.org/x/exp/shiny/driver/internal/lifecycler
+golang.org/x/exp/shiny/driver/internal/win32
+golang.org/x/exp/shiny/driver/internal/x11key
+golang.org/x/exp/shiny/screen
+# golang.org/x/image v0.0.0-20190910094157-69e4b8554b2a
+golang.org/x/image/font
+golang.org/x/image/font/gofont/goregular
+golang.org/x/image/math/f64
+golang.org/x/image/math/fixed
+# golang.org/x/mobile v0.0.0-20190127143845-a42111704963
+golang.org/x/mobile/app
+golang.org/x/mobile/app/internal/callfn
+golang.org/x/mobile/event/key
+golang.org/x/mobile/event/lifecycle
+golang.org/x/mobile/event/mouse
+golang.org/x/mobile/event/paint
+golang.org/x/mobile/event/size
+golang.org/x/mobile/event/touch
+golang.org/x/mobile/geom
+golang.org/x/mobile/gl
+golang.org/x/mobile/internal/mobileinit
+# golang.org/x/sys v0.0.0-20190203050204-7ae0202eb74c
+golang.org/x/sys/windows
