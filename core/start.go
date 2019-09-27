@@ -14,6 +14,14 @@ func GetComponentStart() {
 			}
 		}
 		//渲染预制体
+		//v.Prefab.Range(func(key, value interface{}) bool {
+		//	value.(data.SpriteComponent).Start()
+		//	for _, v3 := range value.(data.SpriteComponent).GetComponent() {
+		//		v3.Start()
+		//	}
+		//	return true
+		//})
+
 		for _, v2 := range v.Prefab {
 			v2.Start()
 			for _, v3 := range v2.GetComponent() {

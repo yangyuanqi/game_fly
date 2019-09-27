@@ -1,6 +1,8 @@
 package timer
 
-import "time"
+import (
+	"time"
+)
 
 //定时器
 func SetTimer(duration time.Duration, f func()) {

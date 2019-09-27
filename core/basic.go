@@ -1,23 +1,24 @@
 package core
 
 import (
-	"game_fly/core/component"
+	"game_fly/core/data"
 	"github.com/SolarLune/resolv/resolv"
 	"github.com/hajimehoshi/ebiten"
 	"strconv"
 )
 
 type Sprite struct {
-	Id        string //唯一标识
-	Name      string //变量名称
-	X, Y      float64
-	W, H      int
-	ScaleW    float64
-	ScaleH    float64
-	Visible   bool          //隐藏
-	Material  *ebiten.Image //材质
+	Id   string //唯一标识
+	Name string //变量名称
+	Rect
+	//geo.Rect
+	ScaleW   float64
+	ScaleH   float64
+	Visible  bool          //隐藏
+	Material *ebiten.Image //材质
+	Destroy  bool          //销毁
 	//Screen    *ebiten.Image
-	Component []component.SpriteComponent //组件
+	Component []data.SpriteComponent //组件
 	Collision *resolv.Rectangle
 }
 
@@ -26,20 +27,11 @@ func (s *Sprite) OnLoad() {
 }
 
 //初始化系统属性
-func (s *Sprite) Create() {
+func (s *Sprite) Create(name string) {
 	ID++
 	id := strconv.Itoa(ID)
 	s.Id = id
-}
-
-func (s *Sprite) SetXY(x, y float64) {
-	s.X = x
-	s.Y = y
-}
-
-func (s *Sprite) SetWH(w, h int) {
-	s.W = w
-	s.H = h
+	s.Name = name
 }
 
 func (s *Sprite) SetScale(sw, sh float64) {
@@ -49,10 +41,6 @@ func (s *Sprite) SetScale(sw, sh float64) {
 
 func (s *Sprite) GetName() (name string) {
 	return s.Name
-}
-
-func (s *Sprite) GetPosition() (x, y, w, h int32) {
-	return int32(s.X), int32(s.Y), int32(s.W), int32(s.H)
 }
 
 func (s *Sprite) GetId() (id string) {
@@ -71,7 +59,7 @@ func (s *Sprite) UpdateResolv() {
 	}
 }
 
-func (s *Sprite) AddComponent(component component.SpriteComponent) {
+func (s *Sprite) AddComponent(component data.SpriteComponent) {
 	s.Component = append(s.Component, component)
 }
 
@@ -81,8 +69,21 @@ func (s *Sprite) AddComponent(component component.SpriteComponent) {
 //	}
 //}
 
-func (s *Sprite) GetComponent() (components []component.SpriteComponent) {
+func (s *Sprite) GetComponent() (components []data.SpriteComponent) {
 	return s.Component
+}
+
+func (s *Sprite) GetVisible() (b bool) {
+	return s.Visible
+}
+func (s *Sprite) SetVisible(b bool) () {
+	s.Visible = b
+}
+func (s *Sprite) GetDestroy() (b bool) {
+	return s.Destroy
+}
+func (s *Sprite) SetDestroy(b bool) () {
+	s.Visible = b
 }
 
 type Component struct {

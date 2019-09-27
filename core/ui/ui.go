@@ -6,8 +6,6 @@ import (
 )
 
 func AddUi(ui data.UiType, groupName string) {
-	ui.OnLoad()
-
 	flg := false
 	for k, v := range sprite.Sprites {
 		if v.GroupName == groupName {
@@ -20,7 +18,7 @@ func AddUi(ui data.UiType, groupName string) {
 		newUi := []data.UiType{ui}
 		sprite.Sprites = append(sprite.Sprites, data.SpriteGroup{GroupName: groupName, Ui: newUi})
 	}
-
+	ui.OnLoad()
 }
 
 func GetUi(groupName, name string) (ui data.UiType) {

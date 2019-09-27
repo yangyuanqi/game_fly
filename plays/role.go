@@ -4,33 +4,33 @@ import (
 	"bytes"
 	"game_fly/core"
 	"game_fly/core/prefab"
-	"game_fly/core/sprite"
+	"game_fly/core/timer"
 	"game_fly/core/ui"
 	"game_fly/plays/assets/images"
-	"github.com/SolarLune/resolv/resolv"
 	"github.com/hajimehoshi/ebiten"
 	"image"
 	_ "image/jpeg"
 	_ "image/png"
 	"log"
 	"math"
+	"time"
 )
 
 type Role struct {
 	core.Sprite
-	RootNode *Game
-	Left     int
-	Right    int
-	Img      *ebiten.Image
-	Fraction int
+	RootNode       *Game
+	Left           int
+	Right          int
+	Img            *ebiten.Image
+	Fraction       int //分数
+	StartAnimation bool
 }
 
 var RoleImg *ebiten.Image
 
 func NewRole() (role *Role) {
 	r := &Role{}
-	r.Sprite.Create()
-	r.Name = "role"
+	r.Sprite.Create("role")
 	r.SetScale(0.3, 0.3)
 	return r
 }
@@ -45,13 +45,30 @@ func (r *Role) OnLoad() {
 	r.Img = RoleImg
 
 	w, h := RoleImg.Size()
-	r.SetWH(int(math.Round(float64(w)*r.ScaleW)), int(math.Round(float64(h)*r.ScaleH)))
+	r.SetWH(math.Round(float64(w)*r.ScaleW), math.Round(float64(h)*r.ScaleH))
+
 	game := core.GetScene("game").(*Game)
-	r.SetXY(math.Ceil(float64((game.W-r.W)/2)), float64(game.H-r.H))
+	r.RootNode = game
+	r.SetXY(math.Ceil(float64((game.W-r.W)/2)), float64(game.H))
+
+	//自动子弹
+	timer.SetTicker(time.Millisecond*200, func() {
+		bullet := NewBullet(BulletImg)
+		bullet.X = bullet.X + 10
+		bullet.Move = func(bullet2 *Bullet) {
+			bullet2.Y -= 4
+		}
+		prefab.AddPrefab(bullet, "roleBullet")
+
+		bullet = NewBullet(BulletImg)
+		bullet.X = bullet.X - 10
+		bullet.Move = func(bullet2 *Bullet) {
+			bullet2.Y -= 4
+		}
+		prefab.AddPrefab(bullet, "roleBullet")
+	}, 0)
 
 	r.AddComponent(NewInput())
-	//1号自动子弹
-	//core.SetTicker(time.Millisecond*200, r.AutoBullet01, 0)
 }
 
 func (r *Role) Start() {
@@ -59,21 +76,8 @@ func (r *Role) Start() {
 }
 
 func (r *Role) Update(screen *ebiten.Image) (err error) {
+	ui.ReplaceUi("ui", "number1", ui.NewNumber(r.Fraction, 200, 10, 0.5))
 	r.Drow(screen)
-
-	roleBullet := prefab.GetPrefabAll("roleBullet")
-	for _, v := range roleBullet {
-		for _, v2 := range sprite.GetSpriteAll("enemy") {
-			colliding := v.GetResolv().(*resolv.Rectangle).IsColliding(v2.GetResolv().(*resolv.Rectangle))
-			if colliding {
-				ui.ReplaceUi("ui", "number1", ui.NewNumber(r.Fraction, 200, 10, 0.5))
-				r.Fraction++
-				prefab.DelPrefab("roleBullet", v.GetId())
-				//fmt.Println("发生碰撞")
-			}
-		}
-	}
-
 	return nil
 }
 
@@ -81,6 +85,14 @@ func (r *Role) Drow(screen *ebiten.Image) {
 	opts := &ebiten.DrawImageOptions{}
 	opts.GeoM.Reset()
 	opts.GeoM.Scale(r.ScaleW, r.ScaleH)
+
+	//飞机初始动画
+	if r.StartAnimation == false {
+		r.Move(0, -2)
+		if r.Y < r.RootNode.H-r.H {
+			r.StartAnimation = true
+		}
+	}
 
 	//灰机倾斜处理
 	if r.Right > 0 || r.Left > 0 {
@@ -99,35 +111,3 @@ func (r *Role) Drow(screen *ebiten.Image) {
 	opts.GeoM.Translate(r.X, r.Y)
 	screen.DrawImage(r.Img, opts)
 }
-
-//func (r *Role) CheckCollied() {
-//	//敌人和英雄
-//
-//	//英雄子弹和敌人
-//	for _, v := range r.RootNode.Enemys {
-//		for _, v2 := range r.GroupBullet {
-//			if v.Visible == true && v2.Visible == true && core.CheckCollision(v, v2) {
-//				v.Visible = false
-//				v2.Visible = false
-//
-//			}
-//		}
-//	}
-//}
-
-//var bullet *Bullet
-//
-//func (r *Role) AutoBullet01() {
-//	for i := 1; i < 7; i++ {
-//		if i > 3 {
-//			bullet = NewBullet(r.RootNode, r, r.BulletImg)
-//			bullet.MX = float64(i-3) / 10
-//			bullet.MY = -10
-//		} else {
-//			bullet = NewBullet(r.RootNode, r, r.BulletImg)
-//			bullet.MX = float64(-i) / 10
-//			bullet.MY = -10
-//		}
-//		r.GroupBullet = append(r.GroupBullet, bullet)
-//	}
-//}

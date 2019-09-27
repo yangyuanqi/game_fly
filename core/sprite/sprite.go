@@ -1,35 +1,32 @@
 package sprite
 
 import (
-	"game_fly/core/component"
 	"game_fly/core/data"
 )
-
 
 var (
 	//Sprites = make(map[string][]component.SpriteComponent)
 	Sprites []data.SpriteGroup
 )
 
-func AddSprite(sprite component.SpriteComponent, groupName string) {
-	sprite.OnLoad()
-
+func AddSprite(sprite data.SpriteComponent, groupName string) {
 	flg := false
 	for k, v := range Sprites {
 		if v.GroupName == groupName {
 			flg = true
 			Sprites[k].Sprite = append(v.Sprite, sprite)
+			break
 		}
 	}
 
 	if flg == false {
-		newSprite := []component.SpriteComponent{sprite}
+		newSprite := []data.SpriteComponent{sprite}
 		Sprites = append(Sprites, data.SpriteGroup{GroupName: groupName, Sprite: newSprite})
 	}
-
+	sprite.OnLoad()
 }
 
-func GetSprite(groupName, name string) (sprite component.SpriteComponent) {
+func GetSprite(groupName, name string) (sprite data.SpriteComponent) {
 	for _, v := range Sprites {
 		if v.GroupName == groupName {
 			for _, v2 := range v.Sprite {
@@ -42,7 +39,7 @@ func GetSprite(groupName, name string) (sprite component.SpriteComponent) {
 	return nil
 }
 
-func GetSpriteAll(groupName string) (component []component.SpriteComponent) {
+func GetSpriteAll(groupName string) (component []data.SpriteComponent) {
 	for _, v := range Sprites {
 		if v.GroupName == groupName {
 			return v.Sprite

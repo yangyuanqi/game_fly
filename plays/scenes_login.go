@@ -2,17 +2,16 @@ package plays
 
 import (
 	"bytes"
-	"fmt"
 	"game_fly/core"
 	"game_fly/core/ui"
 	"game_fly/plays/assets/images"
 	"game_fly/plays/assets/images/ui_img2"
+	"game_fly/plays/conf"
 	"github.com/hajimehoshi/ebiten"
 	"image"
 	_ "image/jpeg"
 	_ "image/png"
 	"log"
-	"strconv"
 )
 
 type Login struct {
@@ -23,7 +22,6 @@ var LoginImg *ebiten.Image
 
 func NewLogin() (login *Login) {
 	login = &Login{}
-	login.W, login.H = 320, 480
 	return
 }
 
@@ -35,12 +33,12 @@ func (l *Login) OnLoad() {
 	LoginImg, _ = ebiten.NewImageFromImage(img, ebiten.FilterDefault)
 
 	LoginImgW, LoginImgH := LoginImg.Size()
-	l.ScaleW, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", float64(l.W)/float64(LoginImgW)), 64)
-	l.ScaleH, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", float64(l.H)/float64(LoginImgH)), 64)
+	sw, sh := conf.CC.GetScenesWH()
+	l.SetScale(core.ScaliEq(sw, float64(LoginImgW)),core.ScaliEq(sh, float64(LoginImgH)))
 
 	img, _, err = image.Decode(bytes.NewReader(ui_img2.UI_png))
 	if err != nil {
-		log.Fatal("login2",err)
+		log.Fatal("login2", err)
 	}
 	UiImage, _ = ebiten.NewImageFromImage(img, ebiten.FilterDefault)
 

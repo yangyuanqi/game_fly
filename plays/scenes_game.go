@@ -3,7 +3,9 @@ package plays
 import (
 	"bytes"
 	"game_fly/core"
+	"game_fly/core/prefab"
 	"game_fly/core/sprite"
+	"game_fly/core/timer"
 	"game_fly/core/ui"
 	"game_fly/plays/assets/images"
 	"github.com/hajimehoshi/ebiten"
@@ -11,6 +13,7 @@ import (
 	_ "image/jpeg"
 	_ "image/png"
 	"log"
+	"time"
 )
 
 var (
@@ -65,9 +68,22 @@ func (g *Game) OnLoad() {
 
 	sprite.AddSprite(NewRole(), "game")
 
-	e1 := NewEnemy(EnemyImg)
-	e1.SetXY(200, 150)
-	sprite.AddSprite(e1, "enemy")
+	timer.SetTicker(time.Millisecond*1000, func() {
+		e1 := NewEnemy(EnemyImg)
+		e1.SetXY(180, -20)
+		e1.Move = func(e *Enemy) {
+			e.Sprite.Move(1, 2)
+		}
+		prefab.AddPrefab(e1, "enemy")
+	}, 5)
+	timer.SetTicker(time.Millisecond*1000, func() {
+		e1 := NewEnemy(EnemyImg)
+		e1.SetXY(140, -20)
+		e1.Move = func(e *Enemy) {
+			e.Sprite.Move(-1, 2)
+		}
+		prefab.AddPrefab(e1, "enemy")
+	}, 5)
 
 	//enemy2 := &Enemy{}
 	//enemy2 = enemy2.Create(EnemyImg)
