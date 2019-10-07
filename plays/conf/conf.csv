@@ -1,0 +1,8 @@
+名称,别名,值,说明
+屏幕宽,scenes_width,320,
+屏幕高,scenes_height,480,
+屏幕比例,scenes_scale,1,
+标题,scenes_title,飞机大战,
+怪物子弹频率,enemy_bullet_speed,50,
+出怪频率,enemy_speed,50,
+角色自动子弹频率,role_bullet_speed,20,

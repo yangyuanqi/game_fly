@@ -1,7 +1,13 @@
 package core
 
 import (
+	"bytes"
 	"fmt"
+	"github.com/hajimehoshi/ebiten"
+	"image"
+	_ "image/jpeg"
+	_ "image/png"
+	"log"
 	"strconv"
 )
 
@@ -32,5 +38,14 @@ func ScaliEq(a1, a2 float64) (s float64) {
 	} else {
 		s, _ = strconv.ParseFloat(fmt.Sprintf("%.4f", a1/a2), 64)
 	}
+	return
+}
+
+func Byte2Image(b []byte) (retImg *ebiten.Image) {
+	img, _, err := image.Decode(bytes.NewReader(b))
+	if err != nil {
+		log.Fatal("Byte2Image:", err)
+	}
+	retImg, _ = ebiten.NewImageFromImage(img, ebiten.FilterDefault)
 	return
 }

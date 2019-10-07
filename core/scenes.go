@@ -6,6 +6,7 @@ import (
 
 type Scene interface {
 	OnLoad()
+	Start()
 	Update(screen *ebiten.Image) (err error)
 }
 
@@ -16,6 +17,9 @@ var (
 
 func RegisterScene(scenes Scene, name string) {
 	Scenes[name] = scenes
+	scenes.OnLoad()
+	scenes.Start()
+	//GetComponentStart()
 }
 
 func GetScene(name string) (scene interface{}) {
@@ -24,5 +28,5 @@ func GetScene(name string) (scene interface{}) {
 
 func SetScenesIng(name string) {
 	ScenesIng = name
-	Scenes[name].(Scene).OnLoad()
+	//Scenes[name].(Scene).OnLoad()
 }

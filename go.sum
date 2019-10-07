@@ -2,6 +2,7 @@ github.com/SolarLune/resolv v0.0.0-20190821203317-2f6176d8d107 h1:KoCYURMjGLT9kH
 github.com/SolarLune/resolv v0.0.0-20190821203317-2f6176d8d107/go.mod h1:Ov0hOC/Xa1bCjByZrz5muPSE8pNZQZioXYMXxgx+K80=
 github.com/go-gl/glfw v0.0.0-20181213070059-819e8ce5125f h1:7MsFMbSn8Lcw0blK4+NEOf8DuHoOBDhJsHz04yh13pM=
 github.com/go-gl/glfw v0.0.0-20181213070059-819e8ce5125f/go.mod h1:vR7hzQXu2zJy9AVAgeJqvqgH9Q5CA+iKCZ2gyEVpxRU=
+github.com/gofrs/flock v0.7.0 h1:pGFUjl501gafK9HBt1VGL1KCOd/YhIooID+xgyJCf3g=
 github.com/gofrs/flock v0.7.0/go.mod h1:F1TvTiK9OcQqauNUHlbJvyl9Qa1QvF/gOUDKA14jxHU=
 github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 h1:DACJavvAHhabrF08vX0COfcOBJRhZ8lUbR+ZWIs0Y5g=
 github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0/go.mod h1:E/TSTwGwJL78qG/PmXZO1EjYhfJinVAhrmmHX6Z8B9k=
@@ -12,6 +13,7 @@ github.com/gopherjs/gopherwasm v0.1.1/go.mod h1:kx4n9a+MzHH0BJJhvlsQ65hqLFXDO/m2
 github.com/gopherjs/gopherwasm v1.0.0/go.mod h1:SkZ8z7CWBz5VXbhJel8TxCmAcsQqzgWGR/8nMhyhZSI=
 github.com/gopherjs/gopherwasm v1.1.0 h1:fA2uLoctU5+T3OhOn2vYP0DVT6pxc7xhTlBB1paATqQ=
 github.com/gopherjs/gopherwasm v1.1.0/go.mod h1:SkZ8z7CWBz5VXbhJel8TxCmAcsQqzgWGR/8nMhyhZSI=
+github.com/hajimehoshi/bitmapfont v1.1.1 h1:H1wQ6QXA8kSp+plARsIMCTVb5iOZHq/OP3uyL5NzLuU=
 github.com/hajimehoshi/bitmapfont v1.1.1/go.mod h1:Hamfxgney7tDSmVOSDh2AWzoDH70OaC+P24zc02Gum4=
 github.com/hajimehoshi/ebiten v1.9.3 h1:YijWGMBwH2XA1ZytUQFy33UDHeCSS6d4JZKH1wq38O0=
 github.com/hajimehoshi/ebiten v1.9.3/go.mod h1:XxiJ4Eltvb1KmcD0i6F81eIB1asJhK47y5DC+FPkyso=
@@ -21,8 +23,10 @@ github.com/hajimehoshi/oto v0.3.3/go.mod h1:e9eTLBB9iZto045HLbzfHJIc+jP3xaKrjZTg
 github.com/jakecoffman/cp v0.1.0/go.mod h1:a3xPx9N8RyFAACD644t2dj/nK4SuLg1v+jL61m2yVo4=
 github.com/jfreymuth/oggvorbis v1.0.0/go.mod h1:abe6F9QRjuU9l+2jek3gj46lu40N4qlYxh2grqkLEDM=
 github.com/jfreymuth/vorbis v1.0.0/go.mod h1:8zy3lUAm9K/rJJk223RKy6vjCZTWC61NA2QD06bfOE0=
+github.com/kr/pretty v0.1.0 h1:L/CwN0zerZDmRFUapSPitk6f+Q3+0za1rQkzVuMiMFI=
 github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
+github.com/kr/text v0.1.0 h1:45sCR5RtlFHMR4UwH9sdQ5TC8v0qDQCHnXt+kaKSTVE=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=
 golang.org/x/exp v0.0.0-20180710024300-14dda7b62fcd h1:nLIcFw7GiqKXUS7HiChg6OAYWgASB2H97dZKd1GhDSs=
 golang.org/x/exp v0.0.0-20180710024300-14dda7b62fcd/go.mod h1:CJ0aWSM057203Lf6IL+f9T1iT9GByDxfZKAQTCR3kQA=
@@ -40,4 +44,5 @@ golang.org/x/sys v0.0.0-20190203050204-7ae0202eb74c h1:YeMXU0KQqExdpG959DFhAhfpY
 golang.org/x/sys v0.0.0-20190203050204-7ae0202eb74c/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
 golang.org/x/tools v0.0.0-20190202235157-7414d4c1f71c/go.mod h1:n7NCudcB/nEzxVGmLbDWY5pfWTLqBcC2KZ6jyYvM4mQ=
+gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 h1:qIbj1fsPNlZgppZ+VLlY7N33q108Sa+fhmuc+sWQYwY=
 gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=

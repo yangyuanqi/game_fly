@@ -10,7 +10,6 @@ var PrefabL sync.Mutex
 type SpriteGroup struct {
 	GroupName string
 	Sprite    []SpriteComponent //有顺序要求
-	//Prefab    map[string]component.SpriteComponent
 	Prefab map[string]SpriteComponent
 	Ui     []UiType
 }
@@ -36,6 +35,7 @@ type SpriteComponent interface {
 	SetVisible(b bool)
 	GetDestroy() (b bool)
 	SetDestroy(b bool)
+	GetPosition() (x, y, w, h float64)
 }
 
 type Core struct {

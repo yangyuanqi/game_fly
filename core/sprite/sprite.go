@@ -24,6 +24,7 @@ func AddSprite(sprite data.SpriteComponent, groupName string) {
 		Sprites = append(Sprites, data.SpriteGroup{GroupName: groupName, Sprite: newSprite})
 	}
 	sprite.OnLoad()
+	sprite.Start()
 }
 
 func GetSprite(groupName, name string) (sprite data.SpriteComponent) {

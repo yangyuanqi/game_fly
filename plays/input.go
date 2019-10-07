@@ -1,6 +1,7 @@
 package plays
 
 import (
+	"fmt"
 	"game_fly/core"
 	"game_fly/core/prefab"
 	"game_fly/core/sprite"
@@ -9,7 +10,9 @@ import (
 )
 
 type Input struct {
-	core.Component
+	core.Sprite
+	role *Role
+	game *Game
 }
 
 func NewInput() (input *Input) {
@@ -21,66 +24,78 @@ func (i *Input) OnLoad() {
 }
 
 func (i *Input) Start() {
-
+	i.role = sprite.GetSprite("game", "role").(*Role)
+	i.game = core.GetScene("game").(*Game)
 }
 
 func (i *Input) Update(screen *ebiten.Image) (err error) {
-	hero := sprite.GetSprite("game", "role").(*Role)
-	game := core.GetScene("game").(*Game)
-	hero.Left = 0
-	hero.Right = 0
-
 	if ebiten.IsKeyPressed(ebiten.KeyUp) {
 		if v := inpututil.KeyPressDuration(ebiten.KeyUp); 0 < v {
 			if v == 1 || v%1 == 0 {
-				hero.Y -= 5
+				i.role.Move(0, -5)
 			}
 		}
-		if hero.Y <= 0 {
-			hero.Y = 0
+		if i.role.Y <= 0 {
+			i.role.Y = 0
 		}
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyDown) {
 		if v := inpututil.KeyPressDuration(ebiten.KeyDown); 0 < v {
 			if v == 1 || v%1 == 0 {
-				hero.Y += 5
+				i.role.Move(0, 5)
 			}
 		}
-		if hero.Y >= float64(game.H)-float64(hero.H) {
-			hero.Y = float64(game.H) - float64(hero.H)
+		if float64(i.role.Y) >= float64(i.game.H)-float64(i.role.H) {
+			i.role.Y = i.game.H - i.role.H
 		}
+	}
+
+	//left
+	if inpututil.IsKeyJustReleased(ebiten.KeyLeft) {
+		i.role.QingXieLeft = false
+		fmt.Println("Left:放开")
+	}
+	if inpututil.IsKeyJustPressed(ebiten.KeyLeft) {
+		i.role.QingXieLeft = true
+		fmt.Println("Left:按下")
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyLeft) {
 		if v := inpututil.KeyPressDuration(ebiten.KeyLeft); 0 < v {
 			if v == 1 || v%1 == 0 {
-				hero.X -= 5
+				i.role.Move(-5, 0)
 			}
-			hero.Left = v
+			//i.role.SetFSM(Left, v)
 		}
-		if hero.X <= 0 {
-			hero.X = 0
+		if i.role.X <= 0 {
+			i.role.X = 0
 		}
 	}
 
+	//right
+	if inpututil.IsKeyJustReleased(ebiten.KeyRight) {
+		i.role.QingXieRight = false
+		fmt.Println("Left:放开")
+	}
+	if inpututil.IsKeyJustPressed(ebiten.KeyRight) {
+		i.role.QingXieRight = true
+		fmt.Println("Left:按下")
+	}
 	if ebiten.IsKeyPressed(ebiten.KeyRight) {
 		if v := inpututil.KeyPressDuration(ebiten.KeyRight); 0 < v {
 			if v == 1 || v%1 == 0 {
-				hero.X += 5
+				i.role.Move(5, 0)
 			}
-			hero.Right = v
+			//i.role.SetFSM(Right, v)
 		}
-		if hero.X >= float64(game.W)-float64(hero.W) {
-			hero.X = float64(game.W) - float64(hero.W)
+		if float64(i.role.X) >= float64(i.game.W)-float64(i.role.W) {
+			i.role.X = i.game.W - i.role.W
 		}
 	}
 
 	if ebiten.IsKeyPressed(ebiten.KeySpace) {
 		if v := inpututil.KeyPressDuration(ebiten.KeySpace); 0 < v {
 			if v == 1 {
-				bullet := NewBullet(BulletImg)
-				bullet.Move = func(bullet2 *Bullet) {
-					bullet2.Y -= 10
-				}
+				bullet := NewBullet(BulletImg, i.role)
 				prefab.AddPrefab(bullet, "roleBullet")
 			}
 		}

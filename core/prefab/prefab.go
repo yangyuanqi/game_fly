@@ -14,7 +14,7 @@ import (
 //var Prefab = map[string]map[string]component.SpriteComponent{}
 //设置预制体
 func AddPrefab(prefab data.SpriteComponent, groupName string) {
-	data.PrefabL.Lock()
+	//data.PrefabL.Lock()
 	flg := false
 	for _, v := range sprite.Sprites {
 		if v.GroupName == groupName {
@@ -42,8 +42,9 @@ func AddPrefab(prefab data.SpriteComponent, groupName string) {
 		sprite.Sprites = append(sprite.Sprites, data.SpriteGroup{GroupName: groupName, Prefab: newPrefab})
 
 	}
-	data.PrefabL.Unlock()
+	//data.PrefabL.Unlock()
 	prefab.OnLoad()
+	prefab.Start()
 }
 
 //根据名称获取组里面的预制体
@@ -60,26 +61,28 @@ func GetPrefabAll(groupName string) (prefab map[string]data.SpriteComponent) {
 func PrefabLen() (len int) {
 	for _, v := range sprite.Sprites {
 		var i int
-		data.PrefabL.Lock()
+		//data.PrefabL.Lock()
 		for range v.Prefab {
 			i++
 		}
-		data.PrefabL.Unlock()
+		//data.PrefabL.Unlock()
 		len += i
 	}
 	return
 }
 
 //根据name与id删除预制体
-func DelPrefab(groupName, id string) {
-	go func(groupName, id string) {
-		for _, v := range sprite.Sprites {
-			if v.GroupName == groupName {
-				data.PrefabL.Lock()
-				delete(v.Prefab, id)
-				data.PrefabL.Unlock()
-				//v.Prefab.Delete(id)
-			}
-		}
-	}(groupName, id)
+func DelPrefab(id string) {
+	//go func(groupName, id string) {
+	for _, v := range sprite.Sprites {
+		delete(v.Prefab, id)
+
+		//if v.GroupName == groupName {
+		//data.PrefabL.Lock()
+		//delete(v.Prefab, id)
+		//data.PrefabL.Unlock()
+		//v.Prefab.Delete(id)
+		//}
+	}
+	//}(groupName, id)
 }

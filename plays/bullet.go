@@ -14,29 +14,39 @@ type Bullet struct {
 	core.Sprite
 	roleNode *Role
 	gameNode Game
-	Move     func(bullet *Bullet)
+	object   data.SpriteComponent
 }
 
-func NewBullet(img *ebiten.Image) (bullet *Bullet) {
+const (
+	BulletType = iota
+)
+
+func NewBullet(img *ebiten.Image, object data.SpriteComponent) (bullet *Bullet) {
 	b := &Bullet{}
 	b.Sprite.Create("bullet")
 	//获取节点
-	b.roleNode = sprite.GetSprite("game", "role").(*Role)
+	b.object = object
 	b.gameNode = *core.GetScene("game").(*Game)
 	//贴图
 	b.Material = img
 	//初始化属性
 	b.SetScale(0.2, 0.2)
-	rw, rh := BulletImg.Size()
-	b.SetWH(math.Round(float64(rw)*b.ScaleW), math.Round(float64(rh)*b.ScaleH))
-	b.SetXY(b.roleNode.X+math.Ceil(float64(b.roleNode.W-b.W)/2), b.roleNode.Y)
+
 	//添加碰撞
 	b.Collision = resolv.NewRectangle(b.GetPositionInt32())
 	return b
 }
 
 func (b *Bullet) OnLoad() {
+	if b.GetFSM(BulletType) == 1 {
+		b.roleNode = sprite.GetSprite("game", "role").(*Role)
+		b.SetXY(b.roleNode.X+int32(math.Ceil(float64(b.roleNode.W-b.W)/2)), b.roleNode.Y)
+	}
 
+	if b.GetFSM(BulletType) == 2 {
+		x, y, w, h := b.object.GetPosition()
+		b.SetXY(int32(int32(x)+(int32(w)-b.W)/2), int32(y+h))
+	}
 }
 
 func (b *Bullet) Start() {
@@ -45,30 +55,35 @@ func (b *Bullet) Start() {
 
 func (b *Bullet) Update(screen *ebiten.Image) (err error) {
 	//到达边界删除b
-	if b.Y > float64(b.gameNode.H) || b.Y < 0 {
-		prefab.DelPrefab("roleBullet", b.Id)
+	if float64(b.Y) > float64(b.gameNode.H) || b.Y < 0 {
+		prefab.DelPrefab(b.Id)
 	}
-	b.Move(b)
 
-	roleBullet := prefab.GetPrefabAll("roleBullet")
-	enemy := prefab.GetPrefabAll("enemy")
-	for _, v := range roleBullet {
-		for _, v2 := range enemy {
-			colliding := v.(data.SpriteComponent).GetResolv().(*resolv.Rectangle).IsColliding(v2.GetResolv().(*resolv.Rectangle))
-			if colliding {
-				v2.(*Enemy).SouShang++
-				prefab.DelPrefab("roleBullet", v.(data.SpriteComponent).GetId())
-			}
-		}
+	if b.GetFSM(BulletType) == 1 {
+		b.Move(0, -5)
 	}
+	if b.GetFSM(BulletType) == 2 {
+		b.Move(0, 3)
+	}
+
+	//roleBullet := prefab.GetPrefabAll("roleBullet")
+	//enemy := prefab.GetPrefabAll("enemy")
+	//for _, v := range roleBullet {
+	//	for _, v2 := range enemy {
+	//		colliding := v.(*Bullet).IsColliding(v2.(*Enemy))
+	//		if colliding {
+	//			fmt.Println("碰撞1")
+	//			v2.(*Enemy).SetFSM(SouShang, v2.(*Enemy).GetFSM(SouShang)+1)
+	//			//v.SetDestroy(true)
+	//			prefab.DelPrefab(v.GetId())
+	//		}
+	//	}
+	//}
 
 	if ebiten.IsDrawingSkipped() {
 		return nil
 	}
 
-	opts2 := &ebiten.DrawImageOptions{}
-	opts2.GeoM.Scale(b.ScaleW, b.ScaleH)
-	opts2.GeoM.Translate(b.X, b.Y)
-	screen.DrawImage(b.Material, opts2)
+	b.Sprite.Update(screen)
 	return
 }

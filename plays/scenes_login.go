@@ -18,8 +18,6 @@ type Login struct {
 	core.Sprite
 }
 
-var LoginImg *ebiten.Image
-
 func NewLogin() (login *Login) {
 	login = &Login{}
 	return
@@ -30,11 +28,11 @@ func (l *Login) OnLoad() {
 	if err != nil {
 		log.Fatal("loginImg:", err)
 	}
-	LoginImg, _ = ebiten.NewImageFromImage(img, ebiten.FilterDefault)
+	l.Material, _ = ebiten.NewImageFromImage(img, ebiten.FilterDefault)
 
-	LoginImgW, LoginImgH := LoginImg.Size()
-	sw, sh := conf.CC.GetScenesWH()
-	l.SetScale(core.ScaliEq(sw, float64(LoginImgW)),core.ScaliEq(sh, float64(LoginImgH)))
+	LoginImgW, LoginImgH := l.Material.Size()
+	sw, sh := conf.GetConfInt("scenes_width"), conf.GetConfInt("scenes_height")
+	l.SetScale(core.ScaliEq(float64(sw), float64(LoginImgW)), core.ScaliEq(float64(sh), float64(LoginImgH)))
 
 	img, _, err = image.Decode(bytes.NewReader(ui_img2.UI_png))
 	if err != nil {
@@ -56,10 +54,14 @@ var button1 = &ui.Button{
 	Text: "New Game",
 }
 
+func (l *Login) Start() {
+
+}
+
 func (l *Login) Update(screen *ebiten.Image) (err error) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(l.ScaleW, l.ScaleH)
-	screen.DrawImage(LoginImg, op)
+	screen.DrawImage(l.Material, op)
 
 	button1.Update()
 	button1.Draw(screen, UiImage)

@@ -1,72 +1,45 @@
 package plays
 
 import (
-	"bytes"
 	"game_fly/core"
 	"game_fly/core/prefab"
-	"game_fly/core/timer"
 	"game_fly/core/ui"
-	"game_fly/plays/assets/images"
+	"game_fly/plays/conf"
+	"github.com/SolarLune/resolv/resolv"
 	"github.com/hajimehoshi/ebiten"
-	"image"
-	_ "image/jpeg"
-	_ "image/png"
-	"log"
 	"math"
-	"time"
 )
 
 type Role struct {
 	core.Sprite
-	RootNode       *Game
-	Left           int
-	Right          int
-	Img            *ebiten.Image
-	Fraction       int //分数
-	StartAnimation bool
+	RootNode     *Game
+	danyao       int
+	QingXieLeft  bool
+	QingXieRight bool
 }
 
-var RoleImg *ebiten.Image
+const (
+	StartAnimation = iota //出场动画
+	Fraction              //分数
+	Left                  //左右移动动画
+	Right
+)
 
 func NewRole() (role *Role) {
 	r := &Role{}
 	r.Sprite.Create("role")
-	r.SetScale(0.3, 0.3)
+	r.SetFSM(StartAnimation, 0)
 	return r
 }
 
 func (r *Role) OnLoad() {
 	//角色贴图
-	img, _, err := image.Decode(bytes.NewReader(images.My_1))
-	if err != nil {
-		log.Fatal(6, err)
-	}
-	RoleImg, _ = ebiten.NewImageFromImage(img, ebiten.FilterDefault)
-	r.Img = RoleImg
-
-	w, h := RoleImg.Size()
-	r.SetWH(math.Round(float64(w)*r.ScaleW), math.Round(float64(h)*r.ScaleH))
-
+	r.SetMaterial(RoleImg)
 	game := core.GetScene("game").(*Game)
 	r.RootNode = game
-	r.SetXY(math.Ceil(float64((game.W-r.W)/2)), float64(game.H))
-
-	//自动子弹
-	timer.SetTicker(time.Millisecond*200, func() {
-		bullet := NewBullet(BulletImg)
-		bullet.X = bullet.X + 10
-		bullet.Move = func(bullet2 *Bullet) {
-			bullet2.Y -= 4
-		}
-		prefab.AddPrefab(bullet, "roleBullet")
-
-		bullet = NewBullet(BulletImg)
-		bullet.X = bullet.X - 10
-		bullet.Move = func(bullet2 *Bullet) {
-			bullet2.Y -= 4
-		}
-		prefab.AddPrefab(bullet, "roleBullet")
-	}, 0)
+	r.SetScale(0.3, 0.3)
+	r.SetXY(int32(math.Ceil(float64((game.W-r.W)/2))), game.H)
+	r.Collision = resolv.NewRectangle(r.GetPositionInt32())
 
 	r.AddComponent(NewInput())
 }
@@ -76,38 +49,89 @@ func (r *Role) Start() {
 }
 
 func (r *Role) Update(screen *ebiten.Image) (err error) {
-	ui.ReplaceUi("ui", "number1", ui.NewNumber(r.Fraction, 200, 10, 0.5))
+	ui.ReplaceUi("ui", "number1", ui.NewNumber(r.GetFSM(Fraction), 200, 10, 15))
 	r.Drow(screen)
 	return nil
 }
 
+var danyaoTime int = 500
+var QingXieTime float64 = 0
+
 func (r *Role) Drow(screen *ebiten.Image) {
-	opts := &ebiten.DrawImageOptions{}
-	opts.GeoM.Reset()
-	opts.GeoM.Scale(r.ScaleW, r.ScaleH)
+	r.UpdateTiming()
+	if r.Timing%conf.GetConfInt("role_bullet_speed") == 0 {
+		r.autoBullet()
+	}
+
+	if r.danyao == 1 {
+		danyaoTime--
+	}
+	if danyaoTime < 0 {
+		r.danyao = 0
+		danyaoTime = 500
+	}
+
+	//opts := &ebiten.DrawImageOptions{}
+	//opts.GeoM.Reset()
+	//opts.GeoM.Scale(r.ScaleW, r.ScaleH)
 
 	//飞机初始动画
-	if r.StartAnimation == false {
+	if r.GetFSM(StartAnimation) == 0 {
 		r.Move(0, -2)
 		if r.Y < r.RootNode.H-r.H {
-			r.StartAnimation = true
+			r.SetFSM(StartAnimation, 1)
 		}
 	}
 
 	//灰机倾斜处理
-	if r.Right > 0 || r.Left > 0 {
-		if r.Right <= 20 {
-			opts.GeoM.Skew(0, float64(r.Right)/100)
-		} else if r.Right > 20 {
-			opts.GeoM.Skew(0, 0.2)
+	if r.QingXieLeft {
+		QingXieTime--
+		if QingXieTime > -20 {
+			r.SetSkewXY(0, QingXieTime/100)
+		} else {
+			QingXieTime = -20
 		}
-		if r.Left <= 20 {
-			opts.GeoM.Skew(0, -float64(r.Left)/100)
-		} else if r.Left > 20 {
-			opts.GeoM.Skew(0, -0.2)
+	}
+	if r.QingXieRight {
+		QingXieTime++
+		if QingXieTime < 20 {
+			r.SetSkewXY(0, QingXieTime/100)
+		} else {
+			QingXieTime = 20
 		}
 	}
 
-	opts.GeoM.Translate(r.X, r.Y)
-	screen.DrawImage(r.Img, opts)
+	if r.QingXieRight == false && r.QingXieLeft == false {
+		if QingXieTime < 0 {
+			QingXieTime++
+			r.SetSkewXY(0, QingXieTime/100)
+		}
+		if QingXieTime > 0 {
+			QingXieTime--
+			r.SetSkewXY(0, QingXieTime/100)
+		}
+	}
+
+	//opts.GeoM.Translate(float64(r.X), float64(r.Y))
+	//screen.DrawImage(r.Material, opts)
+	r.Sprite.Update(screen)
+}
+
+func (r *Role) autoBullet() {
+	if r.danyao == 0 {
+		bullet := NewBullet(BulletImg, r)
+		bullet.SetFSM(BulletType, 1)
+		prefab.AddPrefab(bullet, "roleBullet")
+	}
+	if r.danyao == 1 {
+		bullet := NewBullet(BulletImg, r)
+		bullet.SetFSM(BulletType, 1)
+		prefab.AddPrefab(bullet, "roleBullet")
+		bullet.X = bullet.X + 10
+
+		bullet2 := NewBullet(BulletImg, r)
+		bullet2.SetFSM(BulletType, 1)
+		prefab.AddPrefab(bullet2, "roleBullet")
+		bullet2.X = bullet2.X - 10
+	}
 }

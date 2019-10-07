@@ -2,49 +2,44 @@
 package ui
 
 import (
-	"bytes"
 	"game_fly/core"
 	"game_fly/core/ui/ui_img"
 	"github.com/hajimehoshi/ebiten"
 	"image"
-	_ "image/jpeg"
-	_ "image/png"
-	"log"
 	"strconv"
 )
 
 type Number struct {
-	//data.UiType
 	core.Sprite
 	n    int
 	strN []byte
-	w    int
 	sum  int
-	Zoom float64
+	wh   float64
 }
 
-var NumberImg *ebiten.Image
+//20*20 10
+func NewNumber(n int, x, y, wh float64) (num *Number) {
 
-func NewNumber(n int, x, y, zoom float64) (num *Number) {
 	num = &Number{}
 	num.Name = "number1"
-	num.Zoom = zoom
 	num.n = n
-	num.w = 17
 	num.sum = 10
 	num.strN = []byte(strconv.Itoa(n))
-	num.X = x //第一个数字的位置
-	num.Y = y
+	num.X = int32(x) //第一个数字的位置
+	num.Y = int32(y)
+
+	num.SetMaterial(core.Byte2Image(ui_img.Member_png))
+	w, h := num.Material.Size()
+
+	num.ScaleW = wh * 10 / float64(w)
+	num.ScaleH = wh / float64(h)
+	num.wh = wh
+
 	return
 }
 
-
 func (n *Number) OnLoad() {
-	img, _, err := image.Decode(bytes.NewReader(ui_img.Shuzi_png))
-	if err != nil {
-		log.Fatal("number", err)
-	}
-	NumberImg, _ = ebiten.NewImageFromImage(img, ebiten.FilterDefault)
+
 }
 
 func (n *Number) Start() {
@@ -53,18 +48,17 @@ func (n *Number) Start() {
 
 func (n *Number) Update(screen *ebiten.Image) (err error) {
 	opts := &ebiten.DrawImageOptions{}
-
 	for k, v := range n.strN {
 		num, _ := strconv.Atoi(string(v))
 		opts.GeoM.Reset()
-		opts.GeoM.Scale(n.Zoom, n.Zoom)
+		opts.GeoM.Scale(n.ScaleW, n.ScaleH)
 		if k == 0 {
-			opts.GeoM.Translate(n.X, n.Y)
+			opts.GeoM.Translate(float64(n.X), float64(n.Y))
 		} else {
-			opts.GeoM.Translate(n.X+float64(k*17)*n.Zoom, n.Y)
+			opts.GeoM.Translate(float64(n.X)+float64(k)*n.wh, float64(n.Y))
 		}
 
-		screen.DrawImage(NumberImg.SubImage(image.Rect(num*n.w, 0, num*n.w+17, 24)).(*ebiten.Image), opts)
+		screen.DrawImage(n.Material.SubImage(image.Rect(num*int(n.W/10), 0, num*int(n.W/10)+int(n.W/10), 128)).(*ebiten.Image), opts)
 	}
 	return nil
 }

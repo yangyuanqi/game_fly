@@ -1,17 +1,44 @@
+//全局配置
 package conf
 
-var CC Conf
+import (
+	"encoding/csv"
+	"log"
+	"os"
+	"strconv"
+)
 
-type Conf struct {
-	ScenesWidth, ScenesHeight int
-	Scale                     float64
-	Title                     string
+var Conf [][]string
+
+func init() {
+	dir, _ := os.Getwd()
+	f, err := os.Open(dir + "/plays/conf/conf.csv")
+	if err != nil {
+		log.Println("conf", err)
+	}
+	r := csv.NewReader(f)
+	str, err := r.ReadAll()
+	if err != nil {
+		log.Println("conf", err)
+	}
+	Conf = str
 }
 
-func (c *Conf) SetScenes(w, h int, s float64, title string) {
-	c.ScenesWidth, c.ScenesHeight, c.Scale, c.Title = w, h, s, title
+func GetConfAll() ([][]string) {
+	return Conf
 }
 
-func (c *Conf) GetScenesWH() (w, h float64) {
-	return float64(c.ScenesWidth), float64(c.ScenesHeight)
+func GetConfInt(name string) (value int) {
+	for _, v := range Conf {
+		if v[1] == name {
+			value, _ = strconv.Atoi(v[2])
+			return
+		}
+	}
+	return 0
+}
+
+func GetConfString(name string) (value string) {
+
+	return ""
 }

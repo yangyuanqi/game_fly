@@ -1,3 +1,14 @@
+//数据结构，场景，预制体，精灵，基础结构，组件,ui
+//组件存在基础机构里面
+/*
+	-------onload
+	-------start
+	-------update
+
+	->加载资源，初始化
+    ->添加组件
+ */
+
 package main
 
 import (
@@ -13,29 +24,20 @@ import (
 // todo camera
 
 func main() {
-	Run(320, 480, 1, "灰机大战")
-	//ebiten.Run(game.Update, 300, 300, 1, "灰机大战")
-}
-
-func Run(width, height int, scale float64, title string) {
-	conf.CC = conf.Conf{}
-	conf.CC.SetScenes(width, height, scale, title)
-	//场景切换示例
-	//core.SetTimer(time.Second*5, func() {
-	//注册场景
-	//core.RegisterScene(plays.NewLogin(), "login")
-	//core.RegisterScene(plays.NewScenesHello(), "hello")
-	//core.SetScenesIng("login")
-	//})
 	core.RegisterScene(plays.NewLogin(), "login")
 	core.SetScenesIng("login")
-	core.GetComponentStart()
-	ebiten.Run(Update, width, height, scale, title)
+	ebiten.Run(Update,conf.GetConfInt("scenes_width"), conf.GetConfInt("scenes_height"), 1, "灰机大战")
 }
 
+//func Run(width, height int, scale float64, title string) {
+
+	//core.RegisterScene(plays.NewLogin(), "login")
+	//core.SetScenesIng("login")
+	//ebiten.Run(Update, width, height, scale, title)
+//}
+
 func Update(screen *ebiten.Image) (err error) {
-	core.RootNode = screen
-	//ui,与背景，要先渲染，没有顺序要求的功能可以使用goroutine
+	//core.RootNode = screen
 	//渲染场景
 	core.GetScene(core.ScenesIng).(core.Scene).Update(screen)
 	//渲染精灵，组件

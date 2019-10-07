@@ -1,7 +1,6 @@
 package core
 
 import (
-	"game_fly/core/data"
 	"game_fly/core/prefab"
 	"game_fly/core/sprite"
 	"github.com/hajimehoshi/ebiten"
@@ -49,19 +48,19 @@ func GetComponentUpdate(screen *ebiten.Image) {
 
 	}
 
-	data.PrefabL.Lock()
+	//data.PrefabL.Lock()
 	for _, v := range sprite.Sprites {
 		for _, value := range v.Prefab {
 			value.UpdateResolv()
 			value.Update(screen)
 			if value.GetDestroy() {
-				prefab.DelPrefab(v.GroupName, value.GetId())
+				prefab.DelPrefab(value.GetId())
 			}
 			for _, v3 := range value.GetComponent() {
 				v3.Update(screen)
 			}
 		}
 	}
-	data.PrefabL.Unlock()
+	//data.PrefabL.Unlock()
 
 }

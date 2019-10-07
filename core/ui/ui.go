@@ -19,6 +19,7 @@ func AddUi(ui data.UiType, groupName string) {
 		sprite.Sprites = append(sprite.Sprites, data.SpriteGroup{GroupName: groupName, Ui: newUi})
 	}
 	ui.OnLoad()
+	ui.Start()
 }
 
 func GetUi(groupName, name string) (ui data.UiType) {
