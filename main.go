@@ -22,28 +22,46 @@ import (
 )
 
 // todo camera
+var Load2 bool
 
 func main() {
-	core.RegisterScene(plays.NewLogin(), "login")
-	core.SetScenesIng("login")
-	ebiten.Run(Update,conf.GetConfInt("scenes_width"), conf.GetConfInt("scenes_height"), 1, "灰机大战")
+	//core.RegisterScene(plays.NewLogin(), "login")
+	//core.SetScenesIng("login")
+	//go func() {
+	//	core.RegisterScene(plays.NewGame(), "game")
+	//	core.SetScenesIng("game")
+	//	//load <- true
+	//	time.Sleep(time.Second*3)
+	//	Load2 = true
+	//}()
+
+	core.RegisterScene(plays.NewScenesHello(), "hello")
+	core.SetScenesIng("hello")
+	Load2 = true
+
+	ebiten.Run(Update, conf.GetConfInt("scenes_width"), conf.GetConfInt("scenes_height"), 1, "灰机大战")
 }
 
 //func Run(width, height int, scale float64, title string) {
 
-	//core.RegisterScene(plays.NewLogin(), "login")
-	//core.SetScenesIng("login")
-	//ebiten.Run(Update, width, height, scale, title)
+//core.RegisterScene(plays.NewLogin(), "login")
+//core.SetScenesIng("login")
+//ebiten.Run(Update, width, height, scale, title)
 //}
 
 func Update(screen *ebiten.Image) (err error) {
-	//core.RootNode = screen
-	//渲染场景
-	core.GetScene(core.ScenesIng).(core.Scene).Update(screen)
-	//渲染精灵，组件
-	core.GetComponentUpdate(screen)
+	if Load2 {
+		//core.RootNode = screen
+		//渲染场景
+		core.GetScene(core.ScenesIng).(core.Scene).Update(screen)
+		//渲染精灵，组件
+		core.GetComponentUpdate(screen)
 
-	msg := fmt.Sprintf(`fps:%.2f  componentNum:%d`, ebiten.CurrentFPS(), prefab.PrefabLen())
-	ebitenutil.DebugPrint(screen, msg)
+		msg := fmt.Sprintf(`fps:%.2f  componentNum:%d`, ebiten.CurrentFPS(), prefab.PrefabLen())
+		ebitenutil.DebugPrint(screen, msg)
+	}else{
+		msg := fmt.Sprintf(`fps:%.2f  componentNum:%d %s`, ebiten.CurrentFPS(), prefab.PrefabLen(),"Loading...")
+		ebitenutil.DebugPrint(screen, msg)
+	}
 	return
 }

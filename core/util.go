@@ -49,3 +49,9 @@ func Byte2Image(b []byte) (retImg *ebiten.Image) {
 	retImg, _ = ebiten.NewImageFromImage(img, ebiten.FilterDefault)
 	return
 }
+
+func LoadSprite(img []byte) (sprite *Sprite) {
+	s := &Sprite{}
+	s.SetMaterial(Byte2Image(img))
+	return s
+}

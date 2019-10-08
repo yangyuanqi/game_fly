@@ -77,9 +77,12 @@ type Sprite struct {
 	Collision *resolv.Rectangle
 }
 
-//func (s *Sprite) OnLoad() {
-//
-//}
+func (s *Sprite) OnLoad() {
+
+}
+func (s *Sprite) Start() {
+
+}
 
 func (s *Sprite) Update(screen *ebiten.Image) (err error) {
 
@@ -130,6 +133,8 @@ func (s *Sprite) UpdateResolv() {
 
 func (s *Sprite) AddComponent(component data.SpriteComponent) {
 	s.Component = append(s.Component, component)
+	component.OnLoad()
+	component.Start()
 }
 
 func (s *Sprite) GetComponent() (components []data.SpriteComponent) {

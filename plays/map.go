@@ -29,9 +29,6 @@ func (d *Map) Start() {
 }
 
 func (d *Map) Update(screen *ebiten.Image) (err error) {
-	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(float64(d.X), float64(d.Y))
-	op.GeoM.Scale(d.ScaleW, d.ScaleH)
-	screen.DrawImage(d.Material, op)
+	d.Sprite.Update(screen)
 	return nil
 }

@@ -1,7 +1,6 @@
 package plays
 
 import (
-	"fmt"
 	"game_fly/core"
 	"game_fly/core/prefab"
 	"game_fly/core/sprite"
@@ -20,12 +19,12 @@ func NewInput() (input *Input) {
 }
 
 func (i *Input) OnLoad() {
-
+	i.role = sprite.GetSprite("game", "role").(*Role)
+	i.game = core.GetScene("game").(*Game)
 }
 
 func (i *Input) Start() {
-	i.role = sprite.GetSprite("game", "role").(*Role)
-	i.game = core.GetScene("game").(*Game)
+
 }
 
 func (i *Input) Update(screen *ebiten.Image) (err error) {
@@ -53,11 +52,9 @@ func (i *Input) Update(screen *ebiten.Image) (err error) {
 	//left
 	if inpututil.IsKeyJustReleased(ebiten.KeyLeft) {
 		i.role.QingXieLeft = false
-		fmt.Println("Left:放开")
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyLeft) {
 		i.role.QingXieLeft = true
-		fmt.Println("Left:按下")
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyLeft) {
 		if v := inpututil.KeyPressDuration(ebiten.KeyLeft); 0 < v {
@@ -74,11 +71,9 @@ func (i *Input) Update(screen *ebiten.Image) (err error) {
 	//right
 	if inpututil.IsKeyJustReleased(ebiten.KeyRight) {
 		i.role.QingXieRight = false
-		fmt.Println("Left:放开")
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyRight) {
 		i.role.QingXieRight = true
-		fmt.Println("Left:按下")
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyRight) {
 		if v := inpututil.KeyPressDuration(ebiten.KeyRight); 0 < v {

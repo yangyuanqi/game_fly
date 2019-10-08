@@ -1,6 +1,7 @@
 package plays
 
 import (
+	"fmt"
 	"game_fly/core"
 	"game_fly/core/data"
 	"game_fly/core/prefab"
@@ -36,6 +37,7 @@ func NewGame() (game *Game) {
 
 //初始化场景的时候加载所有资源,可模拟资源加载动画，
 func (g *Game) OnLoad() {
+	fmt.Println(time.Now().UnixNano())
 	g.W, g.H = int32(conf.GetConfInt("scenes_width")), int32(conf.GetConfInt("scenes_height"))
 
 	BulletImg = core.Byte2Image(images.Myb_1)
@@ -43,10 +45,11 @@ func (g *Game) OnLoad() {
 	RoleImg = core.Byte2Image(images.My_1)
 	MapImg = core.Byte2Image(images.M2_jpg)
 	StarImg = core.Byte2Image(images.Xx_png)
+	fmt.Println(time.Now().UnixNano())
 }
 
 func (g *Game) Start() () {
-	sprite.AddSprite(NewMap(), "game")
+	sprite.AddSprite(&Map{}, "game")
 	sprite.AddSprite(NewRole(), "game")
 
 	ui.AddUi(ui.NewNumber(0, 200, 10, 15), "ui")
@@ -62,7 +65,7 @@ func (g *Game) Update(screen *ebiten.Image) (err error) {
 	g.UpdateTiming()
 
 	if g.Timing%conf.GetConfInt("enemy_speed") == 0 {
-		g.autoEnemy()
+		//g.autoEnemy()
 	}
 
 	if g.Timing%100 == 0 {
