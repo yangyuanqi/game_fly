@@ -1,13 +1,13 @@
 package plays
 
 import (
-	"game_fly/core"
+	"game_fly/core/data"
 	"github.com/hajimehoshi/ebiten"
 	"math"
 )
 
 type Star struct {
-	core.Sprite
+	data.Sprite
 }
 
 func NewStar() (m *Star) {

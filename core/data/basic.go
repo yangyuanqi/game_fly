@@ -1,7 +1,6 @@
-package core
+package data
 
 import (
-	"game_fly/core/data"
 	"github.com/SolarLune/resolv/resolv"
 	"github.com/hajimehoshi/ebiten"
 	_ "image/jpeg"
@@ -19,11 +18,20 @@ type Base struct {
 	ScaleH    float64
 	SkewX     float64
 	SkewY     float64
-	Destroy   bool                   //销毁
-	Material  *ebiten.Image          //材质
-	Component []data.SpriteComponent //组件
-	FSM       []int                  //状态
+	Destroy   bool              //销毁
+	Material  *ebiten.Image     //材质
+	//Component []SpriteComponent //组件
+	FSM       []int             //状态
 	//预制体
+	//Prefab []SpriteComponent
+}
+
+type Sprite struct {
+	Base
+	Timing    int
+	Visible   bool //隐藏
+	Collision *resolv.Rectangle
+	Child     []Sprite
 }
 
 func (s *Base) SetScale(sw, sh float64) {
@@ -70,18 +78,16 @@ func (s *Base) GetFSM(key int) (value int) {
 	return 0
 }
 
-type Sprite struct {
-	Base
-	Timing    int
-	Visible   bool //隐藏
-	Collision *resolv.Rectangle
-}
-
 func (s *Sprite) OnLoad() {
 
 }
+
 func (s *Sprite) Start() {
 
+}
+
+func (s *Sprite) GetChild() (child []Sprite) {
+	return s.Child
 }
 
 func (s *Sprite) Update(screen *ebiten.Image) (err error) {
@@ -131,15 +137,15 @@ func (s *Sprite) UpdateResolv() {
 	//}
 }
 
-func (s *Sprite) AddComponent(component data.SpriteComponent) {
-	s.Component = append(s.Component, component)
-	component.OnLoad()
-	component.Start()
-}
-
-func (s *Sprite) GetComponent() (components []data.SpriteComponent) {
-	return s.Component
-}
+//func (s *Sprite) AddComponent(component SpriteComponent) {
+//	s.Component = append(s.Component, component)
+//	component.OnLoad()
+//	component.Start()
+//}
+//
+//func (s *Sprite) GetComponent() (components []SpriteComponent) {
+//	return s.Component
+//}
 
 func (s *Sprite) GetVisible() (b bool) {
 	return s.Visible
@@ -158,3 +164,40 @@ func (s *Sprite) SetSkewXY(skewX, skewY float64) {
 	s.SkewX = skewX
 	s.SkewY = skewY
 }
+
+//func (s *Sprite) AddPrefab(sprite SpriteComponent) {
+//	s.Prefab = append(s.Prefab, sprite)
+//}
+
+//func (s *Sprite) DelPrefab(id string) {
+//	for k, v := range s.Prefab {
+//		if v.GetId() == id {
+//			s.Prefab = append(s.Prefab[0:k], s.Prefab[k+1:]...)
+//		}
+//	}
+//}
+
+//func (s *Sprite) forDelPrefabRoot(sprite []Sprite, id string) {
+//	for _, v := range sprite {
+//		for _, v := range v.GetPrefab() {
+//			if v.GetId() == id {
+//				v.DelPrefab(id)
+//			}
+//		}
+//		s.forDelPrefabRoot(v.GetChild(), id)
+//	}
+//}
+
+//func (s *Sprite) DelPrefabRoot(id string) {
+//	scenes := core.GetScene(core.ScenesIng)
+//	for _, v := range scenes.GetPrefab() {
+//		if v.GetId() == id {
+//			v.DelPrefab(id)
+//		}
+//	}
+//	s.forDelPrefabRoot(scenes.GetChild(), id)
+//}
+
+//func (s *Sprite) GetPrefab() (prefab []SpriteComponent) {
+//	return s.Prefab
+//}

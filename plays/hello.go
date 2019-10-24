@@ -1,12 +1,12 @@
 package plays
 
 import (
-	"game_fly/core"
+	"game_fly/core/data"
 	"github.com/hajimehoshi/ebiten"
 )
 
 type Hello struct {
-	core.Sprite
+	data.Sprite
 }
 
 func (h *Hello) OnLoad() {

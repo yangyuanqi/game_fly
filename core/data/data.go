@@ -6,13 +6,14 @@ import (
 )
 
 var PrefabL sync.Mutex
+var ID int
 
-type SpriteGroup struct {
-	GroupName string
-	Sprite    []SpriteComponent //有顺序要求
-	Prefab map[string]SpriteComponent
-	Ui     []UiType
-}
+//type SpriteGroup struct {
+//	GroupName string
+//	Sprite    []SpriteComponent //有顺序要求
+//	Prefab    map[string]SpriteComponent
+//	Ui        []UiType
+//}
 
 type UiType interface {
 	OnLoad()
@@ -21,22 +22,7 @@ type UiType interface {
 	GetName() (name string)
 }
 
-type SpriteComponent interface {
-	OnLoad()
-	Start()
-	Update(screen *ebiten.Image) (err error)
-	GetResolv() (collision interface{})
-	UpdateResolv()
-	GetId() (id string)
-	GetName() (name string)
-	//SetScreen(image *ebiten.Image)
-	GetComponent() (components []SpriteComponent)
-	GetVisible() (b bool)
-	SetVisible(b bool)
-	GetDestroy() (b bool)
-	SetDestroy(b bool)
-	GetPosition() (x, y, w, h float64)
-}
+
 
 type Core struct {
 	Width, Height int
@@ -46,4 +32,8 @@ type Core struct {
 
 func (c *Core) GetWH() (w, h int) {
 	return c.Width, c.Height
+}
+
+type Prefab struct {
+	Sprite
 }

@@ -3,6 +3,7 @@ package ui
 
 import (
 	"game_fly/core"
+	"game_fly/core/data"
 	"game_fly/core/ui/ui_img"
 	"github.com/hajimehoshi/ebiten"
 	"image"
@@ -10,7 +11,7 @@ import (
 )
 
 type Number struct {
-	core.Sprite
+	data.Sprite
 	n    int
 	strN []byte
 	sum  int

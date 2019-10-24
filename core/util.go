@@ -3,6 +3,7 @@ package core
 import (
 	"bytes"
 	"fmt"
+	"game_fly/core/data"
 	"github.com/hajimehoshi/ebiten"
 	"image"
 	_ "image/jpeg"
@@ -50,8 +51,45 @@ func Byte2Image(b []byte) (retImg *ebiten.Image) {
 	return
 }
 
-func LoadSprite(img []byte) (sprite *Sprite) {
-	s := &Sprite{}
+func LoadSprite(img []byte) (sprite *data.Sprite) {
+	s := &data.Sprite{}
 	s.SetMaterial(Byte2Image(img))
 	return s
+}
+
+func Going(role, scenes SpriteComponent, mfunc string) {
+	rx, _, rw, _ := role.GetPosition()
+	rLR, _ := role.GetAction()
+
+	//sx, _, _, _ := scenes.GetPosition()
+
+	//switch mfunc {
+	//case "move":
+	if rLR == 1 {
+		if rx <= 320-CameraGlobal.LW-rw {
+			role.Move(2, 0)
+		} else {
+			//if sx >= 0 {
+				scenes.Move(-2, 0)
+			//}
+		}
+	}
+
+	if rLR == -1 {
+		if rx >= CameraGlobal.LW {
+			role.Move(-2, 0)
+		} else {
+			//if sx <= 0 {
+				scenes.Move(2, 0)
+			//}
+		}
+	}
+	//}
+
+	//if rUD == 1 {
+	//	r.Move(0, 2)
+	//}
+	//if rUD == -1 {
+	//	r.Move(0, -2)
+	//}
 }

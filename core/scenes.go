@@ -1,32 +1,31 @@
 package core
 
-import (
-	"github.com/hajimehoshi/ebiten"
-)
-
-type Scene interface {
-	OnLoad()
-	Start()
-	Update(screen *ebiten.Image) (err error)
-}
+//type Scene interface {
+//	OnLoad()
+//	Start()
+//	Update(screen *ebiten.Image) (err error)
+//}
 
 var (
-	Scenes    = make(map[string]interface{})
+	Scenes    = make(map[string]SpriteComponent)
 	ScenesIng string
 )
 
-func RegisterScene(scenes Scene, name string) {
+func RegisterScene(scenes SpriteComponent, name string) {
 	Scenes[name] = scenes
 	scenes.OnLoad()
 	scenes.Start()
-	//GetComponentStart()
+	for _, v := range scenes.GetPrefab() {
+		v.OnLoad()
+		v.Start()
+	}
+	GetComponentStart(scenes)
 }
 
-func GetScene(name string) (scene interface{}) {
+func GetScene(name string) (scene SpriteComponent) {
 	return Scenes[name]
 }
 
-func SetScenesIng(name string) {
+func LoadScene(name string) {
 	ScenesIng = name
-	//Scenes[name].(Scene).OnLoad()
 }

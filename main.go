@@ -14,53 +14,35 @@ package main
 import (
 	"fmt"
 	"game_fly/core"
-	"game_fly/core/prefab"
 	"game_fly/plays"
 	"game_fly/plays/conf"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
+	"time"
 )
 
 // todo camera
 var Load2 bool
 
 func main() {
-	//core.RegisterScene(plays.NewLogin(), "login")
-	//core.SetScenesIng("login")
 	//go func() {
-	//	core.RegisterScene(plays.NewGame(), "game")
-	//	core.SetScenesIng("game")
-	//	//load <- true
-	//	time.Sleep(time.Second*3)
-	//	Load2 = true
-	//}()
-
-	core.RegisterScene(plays.NewScenesHello(), "hello")
-	core.SetScenesIng("hello")
+	plays.Scenes = &plays.ScenesHello{}
+	core.RegisterScene(plays.Scenes, "hello")
+	core.LoadScene("hello")
+	time.Sleep(time.Second * 1)
 	Load2 = true
+	//}()
 
 	ebiten.Run(Update, conf.GetConfInt("scenes_width"), conf.GetConfInt("scenes_height"), 1, "灰机大战")
 }
 
-//func Run(width, height int, scale float64, title string) {
-
-//core.RegisterScene(plays.NewLogin(), "login")
-//core.SetScenesIng("login")
-//ebiten.Run(Update, width, height, scale, title)
-//}
-
 func Update(screen *ebiten.Image) (err error) {
 	if Load2 {
-		//core.RootNode = screen
-		//渲染场景
-		core.GetScene(core.ScenesIng).(core.Scene).Update(screen)
-		//渲染精灵，组件
-		core.GetComponentUpdate(screen)
-
-		msg := fmt.Sprintf(`fps:%.2f  componentNum:%d`, ebiten.CurrentFPS(), prefab.PrefabLen())
+		core.GetScene("hello").Update(screen)
+		msg := fmt.Sprintf(`fps:%.2f  componentNum:%d`, ebiten.CurrentFPS())
 		ebitenutil.DebugPrint(screen, msg)
-	}else{
-		msg := fmt.Sprintf(`fps:%.2f  componentNum:%d %s`, ebiten.CurrentFPS(), prefab.PrefabLen(),"Loading...")
+	} else {
+		msg := fmt.Sprintf(`fps:%.2f  componentNum:%d %s`, ebiten.CurrentFPS(), "Loading...")
 		ebitenutil.DebugPrint(screen, msg)
 	}
 	return

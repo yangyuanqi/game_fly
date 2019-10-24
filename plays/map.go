@@ -2,12 +2,13 @@ package plays
 
 import (
 	"game_fly/core"
+	"game_fly/core/data"
 	"game_fly/plays/conf"
 	"github.com/hajimehoshi/ebiten"
 )
 
 type Map struct {
-	core.Sprite
+	data.Sprite
 }
 
 func NewMap() (m *Map) {
