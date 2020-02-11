@@ -1,12 +1,25 @@
 package main
 
 import (
-	"fmt"
-	"math"
+	"game_fly/core/component"
+	"image"
 )
 
 func main() {
-	for i := 0; i < 480; i++ {
-		fmt.Println(math.Sin(float64(i)/5))
-	}
+	//
+
+
+	script := &component.Sprite{}
+	script.Color = image.Black
+
+	scene := component.Scene{}
+	enemy := component.Register(script)
+
+
+
+	scene.AddGameObject(enemy)
+
+
+	//fmt.Println(component.CE)
+	//fmt.Println(component.GetComponent("Sprite"))
 }
