@@ -1,3 +1,5 @@
+github.com/325Gerbils/go-vector v0.0.0-20190707203652-a74f2cba6ba2 h1:b2P4GMvDhU4IBbp0jL9ncw1AApjxCwWqjRHgQ/fw2mw=
+github.com/325Gerbils/go-vector v0.0.0-20190707203652-a74f2cba6ba2/go.mod h1:hHdNn9r3JitoVyqM7d4bzg+XstnU+rnbZ/z9R8IYwP0=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/SolarLune/resolv v0.0.0-20190821203317-2f6176d8d107 h1:KoCYURMjGLT9kHA9pzFWMRqvpzGuR1Ws+tHyErI1qGs=
 github.com/SolarLune/resolv v0.0.0-20190821203317-2f6176d8d107/go.mod h1:Ov0hOC/Xa1bCjByZrz5muPSE8pNZQZioXYMXxgx+K80=

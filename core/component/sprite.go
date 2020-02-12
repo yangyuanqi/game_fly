@@ -1,8 +1,7 @@
 package component
 
-import "image"
+import "github.com/hajimehoshi/ebiten"
 
 type Sprite struct {
-	//Sprite *ebiten.Image
-	Color  image.Image
+	Img *ebiten.Image
 }

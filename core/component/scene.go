@@ -1,13 +1,23 @@
 package component
 
+import "github.com/hajimehoshi/ebiten"
+
 type Renderer interface {
 	start()
 }
 
-type Scene struct {
-	Component []*GameObject
+type Render interface {
+	Update(screen *ebiten.Image) (err error)
+	GetCollider() (collider *Collider)
+	OnCollisionEnter(order Render)
+	//Destroy()
+	GetGameObject()(gameObject *GameObject)
 }
 
-func (s *Scene) AddGameObject(gameObject *GameObject) {
-	s.Component = append(s.Component, gameObject)
+type Scene struct {
+	GameObjects []Render
+}
+
+func (s *Scene) AddGameObject(gameObject Render) {
+	s.GameObjects = append(s.GameObjects, gameObject)
 }
