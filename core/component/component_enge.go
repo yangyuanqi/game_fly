@@ -1,6 +1,7 @@
 package component
 
 import (
+	"github.com/325Gerbils/go-vector"
 	"log"
 	"reflect"
 )
@@ -8,11 +9,18 @@ import (
 var CE = &GameObject{}
 
 type GameObject struct {
-	Del       bool
-	Transform Transform
-	Sprite    Sprite
-	Script    Script
-	Collider  Collider
+	Name      string //名称，预制体有用到
+	Del       bool //删除
+	Transform Transform //
+	Sprite    Sprite //精灵
+	Collider  Collider //碰撞对象
+	//Script    Script
+	IsPrefab bool //是否预制体
+
+	Speed     float64 //速度
+	Direction vector.Vector //方向
+
+	Layer int  //层
 }
 
 func (gao *GameObject) RegisterComponent(componentVal interface{}) (component interface{}) {
@@ -21,8 +29,6 @@ func (gao *GameObject) RegisterComponent(componentVal interface{}) (component in
 		CE.Transform = componentVal.(Transform)
 	case Sprite:
 		CE.Sprite = componentVal.(Sprite)
-	case Script:
-		CE.Script = componentVal.(Script)
 	case Collider:
 		CE.Collider = componentVal.(Collider)
 	default:
@@ -39,6 +45,15 @@ func (gao *GameObject) GetComponent(typeName string) (componentVal interface{}) 
 
 func (gao *GameObject) OnCollisionEnter(order Render) {
 
+}
+
+func (gao *GameObject) OnTriggerEnter(order Render) {
+
+}
+
+func (gao *GameObject) GetThis() (this interface{}) {
+
+	return
 }
 
 func (gao *GameObject) GetCollider() (collider *Collider) {

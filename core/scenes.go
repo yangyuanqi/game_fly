@@ -1,10 +1,14 @@
 package core
 
+import "game_fly/core/component"
+
 //type Scene interface {
 //	OnLoad()
 //	Start()
 //	Update(screen *ebiten.Image) (err error)
 //}
+
+var Game *component.Scene
 
 var (
 	Scenes    = make(map[string]SpriteComponent)

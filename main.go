@@ -14,6 +14,7 @@ package main
 import (
 	"fmt"
 	"game_fly/assets/scenes"
+	"game_fly/core"
 	"game_fly/plays/conf"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
@@ -35,12 +36,13 @@ func main() {
 }
 
 func Update(screen *ebiten.Image) (err error) {
-	msg := fmt.Sprintf(`fps:%.2f  componentNum:%d`, ebiten.CurrentFPS(), len(scenes.Game.GameObjects))
-	ebitenutil.DebugPrint(screen, msg)
 
 	//scenes1 := scenes.NewScene()
 	//fmt.Println(scenes1)
 	scenes.Update(screen)
+
+	msg := fmt.Sprintf(`fps:%.2f  GameObject:%d`, ebiten.CurrentFPS(), len(core.Game.GameObjects))
+	ebitenutil.DebugPrint(screen, msg)
 	//for _, v := range scenes1.GameObjects {
 	//v.Script
 	//}

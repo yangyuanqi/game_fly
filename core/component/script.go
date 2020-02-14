@@ -2,9 +2,17 @@ package component
 
 import "github.com/hajimehoshi/ebiten"
 
-type Script interface {
-	OnLoad()
-	Start()
-	OnCollisionEnter()//[碰撞的对象]//碰撞回调
-	Update(screen *ebiten.Image) (err error)
+type Script struct {
+	GameObject
+}
+
+func (s *Script) Draw(screen *ebiten.Image) {
+	opts := &ebiten.DrawImageOptions{}
+	//optb.GeoM.Reset()
+	opts.GeoM.Scale(s.Transform.ScaleX, s.Transform.ScaleY)
+	//optb.GeoM.Rotate(-1.1)//旋转
+	//optb.GeoM.Skew(1,1)//倾斜
+	opts.GeoM.Translate(s.Collider.Transform.Position.X, s.Collider.Transform.Position.Y)
+	s.Transform.Position = s.Collider.Transform.Position
+	screen.DrawImage(s.Sprite.Img, opts)
 }

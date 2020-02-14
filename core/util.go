@@ -7,8 +7,10 @@ import (
 	"github.com/hajimehoshi/ebiten"
 	"image"
 	_ "image/jpeg"
+	"image/png"
 	_ "image/png"
 	"log"
+	"os"
 	"strconv"
 )
 
@@ -70,7 +72,7 @@ func Going(role, scenes SpriteComponent, mfunc string) {
 			role.Move(2, 0)
 		} else {
 			//if sx >= 0 {
-				scenes.Move(-2, 0)
+			scenes.Move(-2, 0)
 			//}
 		}
 	}
@@ -80,7 +82,7 @@ func Going(role, scenes SpriteComponent, mfunc string) {
 			role.Move(-2, 0)
 		} else {
 			//if sx <= 0 {
-				scenes.Move(2, 0)
+			scenes.Move(2, 0)
 			//}
 		}
 	}
@@ -92,4 +94,20 @@ func Going(role, scenes SpriteComponent, mfunc string) {
 	//if rUD == -1 {
 	//	r.Move(0, -2)
 	//}
+}
+
+func getImg(picDir string) *ebiten.Image {
+	file,err:=os.Open(picDir)
+	if err !=nil{
+		log.Println(err)
+		return nil
+	}
+	defer file.Close()
+	srcImg,err := png.Decode(file)
+	if err !=nil{
+		log.Println(err)
+		return nil
+	}
+	img,_:=ebiten.NewImageFromImage(srcImg,ebiten.FilterDefault)
+	return img
 }
