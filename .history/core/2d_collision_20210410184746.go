@@ -8,7 +8,6 @@ import (
 
 type coll2d struct {
 	p1 map[int]int
-	p2 map[int]int
 }
 
 type P interface {

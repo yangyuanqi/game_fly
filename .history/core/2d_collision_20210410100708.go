@@ -1,15 +1,9 @@
 package core
 
 import (
-	"math"
-
 	"github.com/SolarLune/resolv/resolv"
+	"math"
 )
-
-type coll2d struct {
-	p1 map[int]int
-	p2 map[int]int
-}
 
 type P interface {
 	GetPosition() (x, y float64, w, h int)

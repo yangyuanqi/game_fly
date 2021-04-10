@@ -32,7 +32,7 @@ func main() {
 	//time.Sleep(time.Second * 1)
 	//Load2 = true
 	//}()
-	scenes.NewScene()
+	//scenes.NewScene()
 	ebiten.Run(Update, conf.GetConfInt("scenes_width"), conf.GetConfInt("scenes_height"), 1, "灰机大战")
 }
 

@@ -16,7 +16,6 @@ import (
 	"game_fly/assets/scenes"
 	"game_fly/core"
 	"game_fly/plays/conf"
-
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
