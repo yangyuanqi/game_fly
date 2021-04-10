@@ -4,15 +4,19 @@ import (
 	"github.com/hajimehoshi/ebiten"
 )
 
+var (
+	node []GameObject
+)
+
 type Node struct {
 	objectGame []GameObject
 }
 
-func (c *Node) OnLoad() {
+func (c *Core) OnLoad() {
 
 }
 
-func (c *Node) Update(screen *ebiten.Image) (err error) {
+func (c *Core) Update(screen *ebiten.Image) (err error) {
 	var prefabNames []string
 	var newGameObjects []GameObjects
 	for k, v := range c.Game.GameObjects {

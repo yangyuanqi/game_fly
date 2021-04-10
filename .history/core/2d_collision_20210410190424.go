@@ -2,14 +2,15 @@ package core
 
 import (
 	"math"
+
+	"github.com/SolarLune/resolv/resolv"
 )
 
 type P interface {
 	GetPosition() (x, y float64, w, h int)
 }
 
-// 11,01,00
-func CheckCollision11(p1, p2 P) (b bool) {
+func CheckCollision(p1, p2 P) (b bool) {
 	x1, y1, w1, h1 := p1.GetPosition()
 	x2, y2, w2, h2 := p2.GetPosition()
 
@@ -24,4 +25,13 @@ func CheckCollision11(p1, p2 P) (b bool) {
 	}
 
 	return false
+}
+
+type CollisionComponent struct {
+	Collide      *resolv.Rectangle //碰撞绑定
+	CollideSpace *resolv.Space     //像地形较复杂
+}
+
+func (c *CollisionComponent) Get() {
+
 }

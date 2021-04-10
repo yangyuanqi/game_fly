@@ -4,15 +4,19 @@ import (
 	"github.com/hajimehoshi/ebiten"
 )
 
-type Node struct {
+var (
+	node []GameObject
+)
+
+type Core struct {
 	objectGame []GameObject
 }
 
-func (c *Node) OnLoad() {
+func (c *Core) OnLoad() {
 
 }
 
-func (c *Node) Update(screen *ebiten.Image) (err error) {
+func (c *Core) Update(screen *ebiten.Image) (err error) {
 	var prefabNames []string
 	var newGameObjects []GameObjects
 	for k, v := range c.Game.GameObjects {
@@ -51,11 +55,11 @@ func (c *Node) Update(screen *ebiten.Image) (err error) {
 	return nil
 }
 
-// func inArray(name string, names []string) bool {
-// 	for _, v := range names {
-// 		if name == v {
-// 			return true
-// 		}
-// 	}
-// 	return false
-// }
+func inArray(name string, names []string) bool {
+	for _, v := range names {
+		if name == v {
+			return true
+		}
+	}
+	return false
+}
