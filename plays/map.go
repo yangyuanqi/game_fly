@@ -2,13 +2,13 @@ package plays
 
 import (
 	"game_fly/core"
-	"game_fly/core/data"
-	"game_fly/plays/conf"
+	"game_fly/plays/assets/images"
+
 	"github.com/hajimehoshi/ebiten"
 )
 
 type Map struct {
-	data.Sprite
+	core.Sprite
 }
 
 func NewMap() (m *Map) {
@@ -19,10 +19,7 @@ func NewMap() (m *Map) {
 
 func (m *Map) OnLoad() {
 	//背景
-	m.SetMaterial(MapImg)
-
-	sW, sH := conf.GetConfInt("scenes_width"), conf.GetConfInt("scenes_height")
-	m.SetScale(core.ScaliEq(float64(sW), float64(m.W)), core.ScaliEq(float64(sH), float64(m.H)))
+	m.SetMaterial(core.Byte2Image(images.M3_jpg))
 }
 
 func (d *Map) Start() {

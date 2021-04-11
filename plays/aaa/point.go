@@ -1,4 +1,4 @@
-package core
+package aaa
 
 type Rect struct {
 	X, Y float64

@@ -1,4 +1,4 @@
-package core
+package aaa
 
 import "game_fly/core/component"
 

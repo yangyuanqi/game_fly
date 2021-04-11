@@ -1,30 +1,63 @@
 package core
 
 import (
+	"game_fly/plays/conf"
+
 	"github.com/hajimehoshi/ebiten"
 )
 
-type Node struct {
-	objectGame []GameObject
+var Nodes *Node
+
+func init() {
+	Nodes = &Node{}
 }
 
-func (c *Node) OnLoad() {
+type GameObject interface {
+	OnLoad()
+	Update(screen *ebiten.Image) (err error)
+	AttrDel() bool
+}
+type Node struct {
+	objectGames []GameObject
+	//预制体
+	prefab     []GameObject
+	WinW, WinH int32
+}
 
+func (n *Node) GameObjectLen() int {
+	return len(n.objectGames) + len(n.prefab)
+}
+
+func (n *Node) AddGameObject(gameObject GameObject) {
+	n.objectGames = append(n.objectGames, gameObject)
+}
+
+func (n *Node) AddPrefab(gameObject GameObject) {
+	n.prefab = append(n.prefab, gameObject)
+}
+
+func (n *Node) OnLoad() {
+	n.WinW, n.WinH = int32(conf.GetConfInt("scenes_width")), int32(conf.GetConfInt("scenes_height"))
+	for _, v := range n.objectGames {
+		v.OnLoad()
+	}
 }
 
 func (c *Node) Update(screen *ebiten.Image) (err error) {
-	var prefabNames []string
-	var newGameObjects []GameObjects
-	for k, v := range c.Game.GameObjects {
+
+	var newPrefab []GameObject
+	for _, v := range c.prefab {
 		//删除对象
-		if v.GetGameObject().Del != true {
-			newGameObjects = append(newGameObjects, v)
+		if v.AttrDel() == false {
+			newPrefab = append(newPrefab, v)
 		}
 	}
+	c.prefab = newPrefab
 
-	for k, v := range c.Game.newGameObjects {
-		v.update(screen)
-
+	var objectGamesUpdate []GameObject
+	objectGamesUpdate = append(c.objectGames, c.prefab...)
+	for _, v := range objectGamesUpdate {
+		v.Update(screen)
 		// l := len(core.Game.GameObjects)
 		// for i := k + 1; i < l; i++ {
 		// 	if v != core.Game.GameObjects[i] {

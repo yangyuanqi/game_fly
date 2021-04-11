@@ -1,4 +1,4 @@
-package core
+package aaa
 
 import (
 	"github.com/SolarLune/resolv/resolv"

@@ -3,30 +3,39 @@ package plays
 import (
 	"game_fly/core"
 	"game_fly/plays/assets/images"
-	"game_fly/plays/conf"
+
 	"github.com/hajimehoshi/ebiten"
 )
 
 type Role struct {
-	core.RectangleSprite
-	gameW, gameH int
+	core.Sprite
+	bullet *Bullet
+}
+
+func NewRole() *Role {
+	return &Role{}
+
 }
 
 func (r *Role) OnLoad() {
 	r.SetMaterial(core.Byte2Image(images.My_1))
-	r.SetScaleWH(0.3, 0.3)
-	r.gameW, r.gameH = conf.GetConfInt("scenes_width"), conf.GetConfInt("scenes_height")
-	r.SetXY((int32(r.gameW)+int32(float64(r.W)*0.3))/2, (int32(r.gameH)+int32(float64(r.H)*0.3))/2)
+	r.SetScale(0.3, 0.3)
 
-	core.CreateCamera(200, 200, 50, 50)
-}
-
-func (r *Role) Start() {
+	r.SetXY(100, 100)
+	r.SetXY(1, 1)
 
 }
 
 func (r *Role) Update(screen *ebiten.Image) (err error) {
-	core.Going(r, Scenes, "move")
+	r.X = r.X + int32(r.KeyX()*3)
+	r.Y = r.Y + int32(r.KeyY()*3)
+
+	if r.KeySpace() {
+		r.bullet = NewBullet()
+		r.bullet.SetXY(r.X, r.Y)
+		core.Nodes.AddPrefab(r.bullet)
+	}
+	r.Sprite.Update(screen)
 	return
 }
 

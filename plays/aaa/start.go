@@ -1,4 +1,4 @@
-package core
+package aaa
 
 func forChildStart(child []SpriteComponent) {
 	if len(child) > 0 {

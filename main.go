@@ -13,8 +13,9 @@ package main
 
 import (
 	"fmt"
-	"game_fly/assets/scenes"
 	"game_fly/core"
+	"game_fly/plays"
+	"game_fly/plays/assets/images"
 	"game_fly/plays/conf"
 
 	"github.com/hajimehoshi/ebiten"
@@ -24,7 +25,13 @@ import (
 // todo camera
 //var Load2 bool
 
+var Scenes map[string]*ebiten.Image
+
+func Loding() {
+	Scenes["bullet"] = core.Byte2Image(images.Myb_1)
+}
 func main() {
+	Loding()
 	//go func() {
 	//plays.Scenes = &plays.ScenesHello{}
 	//core.RegisterScene(plays.Scenes, "hello")
@@ -32,7 +39,10 @@ func main() {
 	//time.Sleep(time.Second * 1)
 	//Load2 = true
 	//}()
-	scenes.NewScene()
+	//scenes.NewScene()
+	core.Nodes.AddGameObject(plays.NewMap())
+	core.Nodes.AddGameObject(plays.NewRole())
+	core.Nodes.OnLoad()
 	ebiten.Run(Update, conf.GetConfInt("scenes_width"), conf.GetConfInt("scenes_height"), 1, "灰机大战")
 }
 
@@ -40,9 +50,9 @@ func Update(screen *ebiten.Image) (err error) {
 
 	//scenes1 := scenes.NewScene()
 	//fmt.Println(scenes1)
-	scenes.Update(screen)
+	core.Nodes.Update(screen)
 
-	msg := fmt.Sprintf(`fps:%.2f  GameObject:%d`, ebiten.CurrentFPS(), len(core.Game.GameObjects))
+	msg := fmt.Sprintf(`fps:%.2f  GameObject:%d`, ebiten.CurrentFPS(), core.Nodes.GameObjectLen())
 	ebitenutil.DebugPrint(screen, msg)
 	//for _, v := range scenes1.GameObjects {
 	//v.Script
