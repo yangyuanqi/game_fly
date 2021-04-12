@@ -137,13 +137,12 @@ func (s *Sprite) SetMaterial(img *ebiten.Image) {
 	w, h := s.Material.Size()
 	s.SetWH(math.Round(float64(w)), math.Round(float64(h)))
 	s.SetScale(1, 1)
-	// s.SetXY(0, 0)
+	s.SetXY(0, 0)
 }
 
 //销毁
-func (s *Sprite) Destroy() bool {
+func (s *Sprite) Destroy() {
 	s.Base.Destroy = true
-	return true
 }
 
 func (s *Sprite) AttrDel() bool {

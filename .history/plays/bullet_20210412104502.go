@@ -23,17 +23,17 @@ func (b *Bullet) Update(screen *ebiten.Image) (err error) {
 	b.Y -= 10
 	b.Sprite.Update(screen)
 	if b.Y < 100 {
+
 		var a = &core.Animator{
 			Sprite: core.Sprite{
 				Base: core.Base{
-					X:        b.X,
-					Y:        b.Y,
-					Material: core.Nodes.Img["t1png"],
+					X: b.X,
+					Y: b.Y,
 				},
 			},
-			Interval: 1,
+			Interval: 5,
 			Order:    "line",
-			Imgs:     []*ebiten.Image{core.Nodes.Img["t1png"], core.Nodes.Img["t1png"], core.Nodes.Img["t1png"], core.Nodes.Img["t2png"], core.Nodes.Img["t2png"], core.Nodes.Img["t2png"]},
+			Imgs:     []*ebiten.Image{core.Nodes.Img["t1png"], core.Nodes.Img["t1png"]},
 		}
 		core.Nodes.AddPrefab(a)
 		b.Destroy()

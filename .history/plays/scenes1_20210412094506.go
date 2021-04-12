@@ -7,8 +7,8 @@ import (
 	"github.com/hajimehoshi/ebiten"
 )
 
-var Scenes map[string]*ebiten.Image
+var Scenes1 map[string]*ebiten.Image
 
-func Loding(){
-	Scenes["bullet"] = core.Byte2Image(images.Myb_1)
+func LodImg() {
+	Scenes1["bullet"] = core.Byte2Image(images.Myb_1)
 }

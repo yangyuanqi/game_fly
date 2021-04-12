@@ -25,6 +25,7 @@ import (
 //var Load2 bool
 
 func main() {
+	Loding()
 	//go func() {
 	//plays.Scenes = &plays.ScenesHello{}
 	//core.RegisterScene(plays.Scenes, "hello")
@@ -33,7 +34,6 @@ func main() {
 	//Load2 = true
 	//}()
 	//scenes.NewScene()
-	plays.LodImg()
 	core.Nodes.AddGameObject(plays.NewMap())
 	core.Nodes.AddGameObject(plays.NewRole())
 	core.Nodes.OnLoad()

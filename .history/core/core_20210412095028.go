@@ -10,7 +10,6 @@ var Nodes *Node
 
 func init() {
 	Nodes = &Node{}
-	Nodes.Img = make(map[string]*ebiten.Image)
 }
 
 type GameObject interface {

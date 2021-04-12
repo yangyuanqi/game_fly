@@ -137,7 +137,7 @@ func (s *Sprite) SetMaterial(img *ebiten.Image) {
 	w, h := s.Material.Size()
 	s.SetWH(math.Round(float64(w)), math.Round(float64(h)))
 	s.SetScale(1, 1)
-	// s.SetXY(0, 0)
+	s.SetXY(0, 0)
 }
 
 //销毁

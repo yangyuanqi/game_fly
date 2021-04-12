@@ -33,7 +33,6 @@ func main() {
 	//Load2 = true
 	//}()
 	//scenes.NewScene()
-	plays.LodImg()
 	core.Nodes.AddGameObject(plays.NewMap())
 	core.Nodes.AddGameObject(plays.NewRole())
 	core.Nodes.OnLoad()

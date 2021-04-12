@@ -31,9 +31,9 @@ func (b *Bullet) Update(screen *ebiten.Image) (err error) {
 					Material: core.Nodes.Img["t1png"],
 				},
 			},
-			Interval: 1,
+			Interval: 5,
 			Order:    "line",
-			Imgs:     []*ebiten.Image{core.Nodes.Img["t1png"], core.Nodes.Img["t1png"], core.Nodes.Img["t1png"], core.Nodes.Img["t2png"], core.Nodes.Img["t2png"], core.Nodes.Img["t2png"]},
+			Imgs:     []*ebiten.Image{core.Nodes.Img["t1png"], core.Nodes.Img["t2png"]},
 		}
 		core.Nodes.AddPrefab(a)
 		b.Destroy()
