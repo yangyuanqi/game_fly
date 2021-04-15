@@ -26,8 +26,8 @@ type Base struct {
 	ScaleH     float64
 	SkewX      float64
 	SkewY      float64
-	Destroy    bool          //销毁
-	Material   *ebiten.Image //材质
+	Destroy    bool //销毁
+
 	//Component []SpriteComponent //组件
 	FSM []int //状态
 
@@ -35,17 +35,12 @@ type Base struct {
 
 type Sprite struct {
 	Base
+	Material  *ebiten.Image //材质
 	Timing    int
 	Visible   bool //隐藏
 	Collision *resolv.Rectangle
 	Child     []Sprite
-}
-
-func (s *Base) SetScale(sw, sh float64) {
-	w, h := s.Material.Size()
-	s.SetWH(float64(sw*float64(w)), float64(sh*float64(h)))
-	s.ScaleW = float64(sw)
-	s.ScaleH = float64(sh)
+	Move      func(a *Sprite)
 }
 
 func (s *Base) SetWH(w, h float64) {
@@ -97,12 +92,19 @@ func (s *Sprite) Start() {
 
 }
 
+func (s *Sprite) SetScale(sw, sh float64) {
+	w, h := s.Material.Size()
+	s.SetWH(float64(sw*float64(w)), float64(sh*float64(h)))
+	s.ScaleW = float64(sw)
+	s.ScaleH = float64(sh)
+}
+
 func (s *Sprite) GetChild() (child []Sprite) {
 	return s.Child
 }
 
 func (s *Sprite) Update(screen *ebiten.Image) (err error) {
-
+	s.Move(s)
 	opts := &ebiten.DrawImageOptions{}
 	//opts.GeoM.Reset()
 	opts.GeoM.Skew(s.SkewX, s.SkewY)
@@ -137,6 +139,7 @@ func (s *Sprite) SetMaterial(img *ebiten.Image) {
 	w, h := s.Material.Size()
 	s.SetWH(math.Round(float64(w)), math.Round(float64(h)))
 	s.SetScale(1, 1)
+	s.Move = func(a *Sprite) {}
 	// s.SetXY(0, 0)
 }
 

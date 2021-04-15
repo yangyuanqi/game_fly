@@ -1,4 +1,4 @@
-package aaa
+package core
 
 import (
 	"math"
