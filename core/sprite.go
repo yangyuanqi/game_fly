@@ -47,6 +47,10 @@ func (s *Sprite) GetCollider() *resolv.Rectangle {
 	return s.Collision
 }
 
+func (s *Sprite) SetMove(f func(a *Sprite)) {
+	s.Move = f
+}
+
 func (s *Base) SetWH(w, h float64) {
 	s.W = int32(w)
 	s.H = int32(h)
@@ -111,9 +115,10 @@ func (s *Sprite) Update(screen *ebiten.Image) (err error) {
 	s.Move(s)
 	opts := &ebiten.DrawImageOptions{}
 	//opts.GeoM.Reset()
-	opts.GeoM.Skew(s.SkewX, s.SkewY)
-	opts.GeoM.Scale(s.ScaleW, s.ScaleH)
-	opts.GeoM.Translate(float64(s.X), float64(s.Y))
+	opts.GeoM.Skew(s.SkewX, s.SkewY)                //歪斜
+	opts.GeoM.Scale(s.ScaleW, s.ScaleH)             //比例
+	opts.GeoM.Translate(float64(s.X), float64(s.Y)) //位置
+	//opts.GeoM.Rotate()//旋转
 	screen.DrawImage(s.Material, opts)
 	return nil
 }

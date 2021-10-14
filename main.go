@@ -14,7 +14,6 @@ package main
 import (
 	"fmt"
 	"game_fly/core"
-	"game_fly/plays"
 	"game_fly/plays/conf"
 
 	"github.com/SolarLune/resolv"
@@ -31,11 +30,12 @@ func main() {
 	// Create another rectangle, as well.
 	shape2 = resolv.NewRectangle(11, 100, 16, 16)
 
-	plays.LodImg()
-	core.Nodes.AddGameObject(plays.NewMap())
-	core.Nodes.AddGameObject(plays.NewRole())
-	core.Nodes.AddGameObject(plays.NewTest())
-	core.Nodes.OnLoad()
+	// plays.LodImg()
+	// core.Nodes.AddGameObject(plays.NewMap())
+	// core.Nodes.AddGameObject(plays.NewRole())
+	// core.Nodes.AddGameObject(plays.NewTest())
+	// core.Nodes.OnLoad()
+
 	ebiten.Run(Update, conf.GetConfInt("scenes_width"), conf.GetConfInt("scenes_height"), 1, "灰机大战")
 
 }

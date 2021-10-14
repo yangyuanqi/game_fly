@@ -3,13 +3,13 @@ package plays
 import (
 	"game_fly/core"
 	"game_fly/plays/assets/images"
+	"game_fly/plays/conf"
 
 	"github.com/hajimehoshi/ebiten"
 )
 
 type Role struct {
 	core.Sprite
-	bullet *Bullet
 }
 
 func NewRole() *Role {
@@ -26,8 +26,24 @@ func (r *Role) OnLoad() {
 }
 
 func (r *Role) Update(screen *ebiten.Image) (err error) {
-	r.X = r.X + int32(r.KeyX()*3)
-	r.Y = r.Y + int32(r.KeyY()*3)
+	r.X = r.X + int32(r.KeyX()*4)
+	r.Y = r.Y + int32(r.KeyY()*4)
+
+	core.Nodes.Move = func(a *core.Sprite) {
+		if r.X < 100 && r.KeyX() == -1 {
+			a.X -= int32(r.KeyX() * 1)
+		}
+		if int32(conf.GetConfInt("scenes_width"))-r.X < 100 && r.KeyX() == 1 {
+			a.X -= int32(r.KeyX() * 1)
+		}
+
+		if r.Y < 100 && r.KeyY() == -1 && core.Nodes.{
+			a.Y -= int32(r.KeyY() * 4)
+		}
+		if int32(conf.GetConfInt("scenes_height"))-r.Y < 100 && r.KeyY() == 1 {
+			a.Y -= int32(r.KeyY() * 4)
+		}
+	}
 
 	if r.KeySpace() {
 		r1 := NewBullet()

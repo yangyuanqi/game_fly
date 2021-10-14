@@ -17,13 +17,29 @@ type GameObject interface {
 	OnLoad()
 	Update(screen *ebiten.Image) (err error)
 	AttrDel() bool
+	SetMove(f func(a *Sprite))
 }
 type Node struct {
+	Move        func(a *Sprite)
 	objectGames []GameObject
 	//预制体
 	prefab     []GameObject
 	WinW, WinH int32
 	Img        map[string]*ebiten.Image
+}
+
+type Camera struct {
+	W, H, X, Y int32
+	Move       func(a *Sprite)
+}
+type Scene struct {
+	Camera   Camera
+	RootNode *Node
+}
+
+type System struct {
+	winW, winH int32
+	Scene      Scene
 }
 
 func (n *Node) GameObjectLen() int {
@@ -59,6 +75,9 @@ func (c *Node) Update(screen *ebiten.Image) (err error) {
 	var objectGamesUpdate []GameObject
 	objectGamesUpdate = append(c.objectGames, c.prefab...)
 	for _, v := range objectGamesUpdate {
+		if c.Move != nil {
+			v.SetMove(c.Move)
+		}
 		v.Update(screen)
 
 		// l := len(core.Game.GameObjects)
