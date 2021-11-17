@@ -25,56 +25,56 @@ var shape1 *resolv.Rectangle
 var shape2 *resolv.Rectangle
 
 func main() {
-	shape1 = resolv.NewRectangle(10, 10, 16, 16)
+	// shape1 = resolv.NewRectangle(10, 10, 16, 16)
 
-	// Create another rectangle, as well.
-	shape2 = resolv.NewRectangle(11, 100, 16, 16)
+	// // Create another rectangle, as well.
+	// shape2 = resolv.NewRectangle(11, 100, 16, 16)
 
-	// plays.LodImg()
+	// //plays.LodImg()
 	// core.Nodes.AddGameObject(plays.NewMap())
 	// core.Nodes.AddGameObject(plays.NewRole())
 	// core.Nodes.AddGameObject(plays.NewTest())
-	// core.Nodes.OnLoad()
+	core.Nodes.OnLoad()
 
 	ebiten.Run(Update, conf.GetConfInt("scenes_width"), conf.GetConfInt("scenes_height"), 1, "灰机大战")
 
 }
 
 func Update(screen *ebiten.Image) (err error) {
-	// Later on, in the game's update loop...
+	// // Later on, in the game's update loop...
 
-	// Let's say we were trying to move the shape to the right by 2 pixels. We'll create a delta X movement variable
-	// that stores a value of 2.
-	dx := 2
+	// // Let's say we were trying to move the shape to the right by 2 pixels. We'll create a delta X movement variable
+	// // that stores a value of 2.
+	// dx := 2
 
-	// Here, we check to see if there's a collision should shape1 try to move to the right by the delta movement. The Resolve()
-	// functions return a Collision object that has information about whether the attempted movement resulted in a collision
-	// or not.
-	resolution := resolv.Resolve(shape1, shape2, int32(dx), 0)
+	// // Here, we check to see if there's a collision should shape1 try to move to the right by the delta movement. The Resolve()
+	// // functions return a Collision object that has information about whether the attempted movement resulted in a collision
+	// // or not.
+	// resolution := resolv.Resolve(shape1, shape2, int32(dx), 0)
 
-	if resolution.Colliding() {
+	// if resolution.Colliding() {
 
-		// If there was a collision, then shape1 couldn't move fully to the right. It came into contact with shape2,
-		// and the variable "resolution" now holds a Collision struct with helpful information, like how far to move to be touching.
+	// 	// If there was a collision, then shape1 couldn't move fully to the right. It came into contact with shape2,
+	// 	// and the variable "resolution" now holds a Collision struct with helpful information, like how far to move to be touching.
 
-		// Here we just move the shape over to the right by the distance reported by the Collision struct so it'll come into contact
-		// with shape2.
-		shape1.X += resolution.ResolveX
+	// 	// Here we just move the shape over to the right by the distance reported by the Collision struct so it'll come into contact
+	// 	// with shape2.
+	// 	shape1.X += resolution.ResolveX
 
-	} else {
+	// } else {
 
-		// If there wasn't a collision, shape1 should be able to move fully to the right, so we move it.
-		shape1.X += int32(dx)
+	// 	// If there wasn't a collision, shape1 should be able to move fully to the right, so we move it.
+	// 	shape1.X += int32(dx)
 
-	}
+	// }
 
-	// We can also do collision testing only pretty simply:
+	// // We can also do collision testing only pretty simply:
 
-	colliding := shape1.IsColliding(shape2)
+	// colliding := shape1.IsColliding(shape2)
 
-	if colliding {
-		fmt.Println("WHOA! shape1 and shape2 are colliding.")
-	}
+	// if colliding {
+	// 	fmt.Println("WHOA! shape1 and shape2 are colliding.")
+	// }
 
 	core.Nodes.Update(screen)
 

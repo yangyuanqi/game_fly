@@ -37,7 +37,7 @@ func (r *Role) Update(screen *ebiten.Image) (err error) {
 			a.X -= int32(r.KeyX() * 1)
 		}
 
-		if r.Y < 100 && r.KeyY() == -1 && core.Nodes.{
+		if r.Y < 100 && r.KeyY() == -1 {
 			a.Y -= int32(r.KeyY() * 4)
 		}
 		if int32(conf.GetConfInt("scenes_height"))-r.Y < 100 && r.KeyY() == 1 {
