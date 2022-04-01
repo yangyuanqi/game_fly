@@ -22,5 +22,5 @@ func (s *Sprite) Update() error {
 }
 
 func (s *Sprite) Draw(screen *ebiten.Image) {
-	screen.DrawImage(s.SpriteFrame, nil)
+
 }

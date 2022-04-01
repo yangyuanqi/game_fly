@@ -1,13 +1,18 @@
 package scripts
 
 import (
-	"github.com/hajimehoshi/ebiten/v2"
+	"game_fly/core"
+	"game_fly/core/component"
 )
 
 type Background struct {
+	*core.GameObject
 }
 
-func (b *Background) Update(screen *ebiten.Image) (err error) {
-
-	return
+func (f *Background) Update() error {
+	f.SetPosition(component.Vec2{f.Node().Position.X, f.Node().Position.Y + 1})
+	if f.Node().Position.Y >= 800 {
+		f.Node().Position.Y = -800
+	}
+	return nil
 }

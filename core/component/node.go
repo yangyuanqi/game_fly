@@ -16,7 +16,7 @@ type Node struct {
 	Active   bool
 	Position Vec3
 	Rotation Vec3
-	Scale    Vec3
+	Scale    Vec2
 	Layer    uint
 }
 

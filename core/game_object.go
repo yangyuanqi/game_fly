@@ -2,6 +2,7 @@ package core
 
 import (
 	"bytes"
+	"game_fly/core/component"
 	"github.com/hajimehoshi/ebiten/v2"
 	"image"
 	_ "image/jpeg"
@@ -40,15 +41,42 @@ func (g *GameObject) Update() error {
 }
 
 func (g *GameObject) Draw(screen *ebiten.Image) {
-
+	options := &ebiten.DrawImageOptions{}
+	options.GeoM.Scale(g.Node().Scale.X, g.Node().Scale.Y)
+	options.GeoM.Translate(g.Node().Position.X, g.Node().Position.Y)
+	screen.DrawImage(g.Sprite().SpriteFrame, options)
 }
+
 func (s *GameObject) GetChildren() []GameObjectInterface {
 	return s.Children
 }
+
 func (s *GameObject) GetComponent() []Component {
 	return s.Component
 }
+
 func (s *GameObject) Init() {
+}
+func (s *GameObject) SetPosition(vec2 component.Vec2) {
+	s.Node().Position.X = vec2.X
+	s.Node().Position.Y = vec2.Y
+}
+func (s *GameObject) Node() (node *component.Node) {
+	for _, v := range s.Component {
+		if _, ok := v.(*component.Node); ok {
+			return v.(*component.Node)
+		}
+	}
+	return nil
+}
+
+func (s *GameObject) Sprite() (node *component.Sprite) {
+	for _, v := range s.Component {
+		if _, ok := v.(*component.Sprite); ok {
+			return v.(*component.Sprite)
+		}
+	}
+	return nil
 }
 
 //func (s *GameObject) GetChildren() []component.GameObjectInterface {
