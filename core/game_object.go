@@ -2,8 +2,10 @@ package core
 
 import (
 	"bytes"
+	"fmt"
 	"game_fly/core/component"
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"image"
 	_ "image/jpeg"
 	_ "image/png"
@@ -16,7 +18,7 @@ import (
 
 type GameObject struct {
 	Name      string //名称
-	Destroy   bool   //销毁
+	destroy   bool   //销毁
 	Component []Component
 	Children  []GameObjectInterface
 }
@@ -36,7 +38,7 @@ func (g *GameObject) SetParent() {
 
 }
 
-func (g *GameObject) Update() error {
+func (g *GameObject) Update(dt float64) error {
 	return nil
 }
 
@@ -45,11 +47,36 @@ func (g *GameObject) Draw(screen *ebiten.Image) {
 	options.GeoM.Scale(g.Node().Scale.X, g.Node().Scale.Y)
 	options.GeoM.Translate(g.Node().Position.X, g.Node().Position.Y)
 	screen.DrawImage(g.Sprite().SpriteFrame, options)
+
+	msg := fmt.Sprintf(`TPS: %0.2f
+FPS: %0.2f
+Num of sprites: %d
+`, ebiten.CurrentTPS(), ebiten.CurrentFPS(), len(g.Children))
+	ebitenutil.DebugPrint(screen, msg)
 }
 
-func (s *GameObject) GetChildren() []GameObjectInterface {
-	return s.Children
+func (g *GameObject) Destroy() {
+	g.destroy = true
 }
+
+func (g *GameObject) GetDestroy() bool {
+	return g.destroy
+}
+func (s *GameObject) GetChildren() *[]GameObjectInterface {
+	return &s.Children
+}
+
+//func (g *GameObject) SetChildren(newChildren []GameObjectInterface) {
+//	g.Children = newChildren
+//}
+
+//func (g *GameObject) FilterChildren() {
+//	for k, v := range g.Children {
+//		if v.GetDestroy() == true {
+//			g.Children = append(g.Children[:k], g.Children[:k+1]...)
+//		}
+//	}
+//}
 
 func (s *GameObject) GetComponent() []Component {
 	return s.Component

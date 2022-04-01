@@ -5,13 +5,15 @@ import (
 )
 
 type Component interface {
-	Update() error
+	Update(dt float64) error
 	Draw(screen *ebiten.Image)
 }
 
 type GameObjectInterface interface {
 	Init()
 	Component
-	GetChildren() []GameObjectInterface
+	GetChildren() *[]GameObjectInterface
+	//SetChildren(newChildren []GameObjectInterface)
 	GetComponent() []Component
+	GetDestroy() bool
 }

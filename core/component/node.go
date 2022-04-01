@@ -20,7 +20,7 @@ type Node struct {
 	Layer    uint
 }
 
-func (n *Node) Update() error {
+func (n *Node) Update(dt float64) error {
 	return nil
 }
 

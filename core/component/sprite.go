@@ -17,7 +17,7 @@ type Sprite struct {
 	Trim           bool
 }
 
-func (s *Sprite) Update() error {
+func (s *Sprite) Update(dt float64) error {
 	return nil
 }
 

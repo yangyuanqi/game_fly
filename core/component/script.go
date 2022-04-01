@@ -8,7 +8,7 @@ import (
 type Script struct {
 }
 
-func (s *Script) Update() error {
+func (s *Script) Update(dt float64) error {
 	fmt.Println("script")
 	return nil
 }

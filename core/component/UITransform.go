@@ -13,7 +13,7 @@ type UITransform struct {
 	AnchorPoint Vec2
 }
 
-func (u *UITransform) Update() error {
+func (u *UITransform) Update(dt float64) error {
 	return nil
 }
 
