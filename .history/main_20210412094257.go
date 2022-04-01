@@ -34,8 +34,8 @@ func main() {
 	//Load2 = true
 	//}()
 	//scenes.NewScene()
-	core.Nodes.AddGameObject(plays.NewMap())
-	core.Nodes.AddGameObject(plays.NewRole())
+	core.Nodes.AddGameObject(plays2.NewMap())
+	core.Nodes.AddGameObject(plays2.NewRole())
 	core.Nodes.OnLoad()
 	ebiten.Run(Update, conf.GetConfInt("scenes_width"), conf.GetConfInt("scenes_height"), 1, "灰机大战")
 }
