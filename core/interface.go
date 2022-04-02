@@ -13,7 +13,6 @@ type GameObjectInterface interface {
 	Init()
 	Component
 	GetChildren() *[]GameObjectInterface
-	//SetChildren(newChildren []GameObjectInterface)
 	GetComponent() []Component
 	GetDestroy() bool
 }
